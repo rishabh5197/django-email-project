@@ -1,0 +1,61 @@
+{% extends "mails/basehtml.html" %}
+<!-- extending and loading page, loading static too -->
+{% load static %}
+<!-- title -->
+{% block title %} All email ids {% endblock %}
+
+<!-- css block -->
+{% block css%}
+<link rel="stylesheet" href="{% static 'mails/css/viewemailids.css' %}" />
+{% endblock %}
+
+<!-- Main content block -->
+{% block content%}
+<div align='center'>
+    <h1 class='clients'>
+        All Clients
+    </h1>
+</div>
+<div align='center' class='mainbody'>
+  <table class='clients'>
+    <thead>
+      <tr>
+        <td>Sr No.</td>
+        <td>Name</td>
+        <td>Email Addresses</td>
+        <td>Industry Name</td>
+        <td>phone_number</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in emails %}
+      <tr>
+        <td>{{forloop.counter }}</td>
+        <td>{{i.name}}</td>
+        <td>{{i.email_address}}</td>
+        <td>{{i.industry_name}}</td>
+        <td>{{i.phone_number}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div align='center'>
+    <a href="/selection" class='btn btn-danger'><i class="bi bi-arrow-left-circle"></i> Go back to home</a>
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"></script>
+<script>
+$(document).ready( function () {
+    $('.clients').DataTable();
+} );
+</script>
+{% endblock%}

@@ -1,0 +1,74 @@
+<!-- template extended -->
+{% extends "mails/basehtml.html" %}
+
+<!-- static files loaded -->
+{% load static %}
+
+<!-- title block start -->
+{% block title %} Login {%endblock %}
+
+<!-- css block starts -->
+{% block css%}
+<link rel="stylesheet" href="{% static 'mails/css/login.css' %}" />
+{% endblock %}
+
+<!-- the the main body -->
+{% block content %}
+
+<div class="mainbody" align="center">
+  <div class="loginview">
+    <form method="POST">
+      {% csrf_token %}
+      <div style="font-size: 3rem">Login</div>
+      {% if errmsg %}
+      <p style="color: white">{{errmsg}}</p>
+      {% endif %}
+      <div class="info">Email Address</div>
+      <div>
+        <i class="bi bi-envelope-fill"></i>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          placeholder="abc@gmail.com"
+          autocomplete="off"
+        />
+      </div>
+      <div class="info">Password</div>
+      <div>
+        <i class="bi bi-lock-fill"></i>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Password"
+          autocomplete="off"
+        />
+      </div>
+      <div style="margin: 10px">
+        <button type="submit" class="btn btn-warning">
+          <i class="bi bi-arrow-right-circle-fill"></i> Login
+        </button>
+      </div>
+    </form>
+    <div border="1px solid black;">
+      <a href="/registeruser">
+        <button class="btn btn-light">
+          <i class="bi bi-person-plus-fill"></i> Register new user
+        </button>
+      </a>
+    </div>
+    {% comment %}
+    <div style="margin-top: 15px">
+      <a href="/forgetpage">
+        <button class="btn btn-primary">
+          <i class="bi bi-emoji-neutral-fill" style="color: yellow"></i> forgot
+          password
+        </button>
+      </a>
+    </div>
+    {% endcomment %}
+  </div>
+</div>
+
+{% endblock %}

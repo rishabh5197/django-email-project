@@ -1,0 +1,14 @@
+{% extends "administrative/base.html" %} {% load static %} {% block title %}
+Logout Page {% endblock %} {% block css %}
+<link rel="stylesheet" href="{% static 'administrative/css/logout.css' %}" />
+{% endblock %} {% block content %}
+<div class="mainbody">
+  <div align="right">
+    <i class="bi bi-check-circle-fill"></i>
+  </div>
+  <div>
+    <div class="d-flex p-2"><p>Successfully Logged out</p></div>
+    <p>click here to <a href="/administrative/">Login Again</a></p>
+  </div>
+</div>
+{% endblock %}

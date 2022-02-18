@@ -1,0 +1,26 @@
+.mainbody {
+  margin: 2%;
+}
+
+.title {
+  border: 1px solid rgba(0, 0, 0, 0.438);
+}
+
+.tablecss {
+  width: 100%;
+  border: 1px solid black;
+  /* margin:2%; */
+}
+
+/* th,
+td {
+  padding:0%;
+  color: white;
+} */
+
+tr:nth-child(even) {
+  background-color: rgba(192, 192, 192, 0.157);
+}
+tr:nth-child(odd) {
+  background-color: rgba(0, 0, 0, 0.198);
+}

@@ -1,0 +1,243 @@
+{% extends 'mails/basehtml.html' %}
+
+<!-- Loading static -->
+{% load static %} {% comment %} created byrishabh at 2:37 on 14th February 2022
+{% endcomment %} {% comment %} loading static {% endcomment%} {% comment %}
+loading static {% endcomment %}
+<!-- this is tile block -->
+{% block title %} 👱Register yourself...🙍 {% endblock%}
+
+<!-- this is css block -->
+{% block css%}
+<link rel="stylesheet" href="{% static 'mails/css/registeruser.css' %}" />
+{% endblock %}
+
+<!-- this is main block -->
+{% block content %}
+<div class="body" align="center">
+  {% if msg %}
+  <div class="row">{{msg}}</div>
+  {% endif %}
+  <form method="POST">
+    {% csrf_token %}
+
+    <div class="row" align="center">
+      <div
+        class="col-sm"
+        style="
+          background-color: #c0c0c0;
+          color: white;
+          padding: 10px;
+          font-weight: bold;
+        "
+      >
+        Register user
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm" align="left" style="font-weight: bold">Name</div>
+      <div class="col-sm" align="left">
+        <input type="text" id="name" name="name" placeholder="Name" required />
+      </div>
+      <div class="col-sm" align="left" style="font-weight: bold">
+        Employee Id
+      </div>
+      <div class="col-sm" align="left" align="left">
+        <input
+          type="text"
+          id="employee_id"
+          name="employee_id"
+          placeholder="Employee ID"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm" align="left" style="font-weight: bold">
+        Department
+      </div>
+      <div class="col-sm" align="left">
+        <input
+          type="text"
+          id="department"
+          name="department"
+          placeholder="Department Name"
+          required
+        />
+      </div>
+      <div class="col-sm" align="left" style="font-weight: bold">
+        Email Address
+      </div>
+      <div class="col-sm" align="left">
+        <input
+          type="email"
+          id="email_id"
+          name="email_id"
+          placeholder="Email Address."
+          required
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm" align="left" style="font-weight: bold">
+        Mobile Number
+      </div>
+      <div class="col-sm" align="left">
+        <input
+          type="text"
+          id="mobile"
+          name="mobile"
+          placeholder="Mobile Number"
+          required
+        />
+      </div>
+      <div class="col-sm" align="left"></div>
+      <div class="col-sm" align="left"></div>
+    </div>
+    <div class="row">
+      <div class="col-sm" align="left" style="font-weight: bold">Address</div>
+      <div class="col-sm" align="left">
+        <textarea id="address" name="address" rows="3" cols="40"></textarea>
+      </div>
+      <div class="col-sm"></div>
+      <div class="col-sm"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm" align="left" style="font-weight: bold">Password</div>
+      <div class="col-sm" align="left">
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="****"
+        />
+      </div>
+      <div class="col-sm" align="left" style="font-weight: bold">
+        Confirm Password
+      </div>
+      <div class="col-sm" align="left" align="left">
+        <input
+          type="password"
+          id="confirm_password"
+          name="confirm_password"
+          placeholder="****"
+        />
+      </div>
+    </div>
+    <div class="row" lign="left">
+      <div class="col-sm" align="left" style="font-weight: bold">
+        Security Question 1
+      </div>
+      <div class="col-sm" align="left">
+        <select name="question_1" id="question_1">
+          <option value="In what city were you born?">
+            In what city were you born?
+          </option>
+          <option value="What is the name of your favorite pet?">
+            What is the name of your favorite pet?
+          </option>
+          <option value="What is your mother's maiden name?">
+            What is your mother's maiden name?
+          </option>
+          <option value="What high school did you attend?">
+            What high school did you attend?
+          </option>
+          <option value="What is the name of your first school?">
+            What is the name of your first school?
+          </option>
+          <option value="What was the make of your first car?">
+            What was the make of your first car?
+          </option>
+          <option value="What was your favorite food as a child?">
+            What was your favorite food as a child?
+          </option>
+          <option value="Where did you meet your spouse?">
+            Where did you meet your spouse?
+          </option>
+        </select>
+      </div>
+      <div class="col-sm" align="left" style="font-weight: bold">Answer</div>
+      <div class="col-sm" align="left">
+        <input
+          type="text"
+          name="answer_1"
+          id="answer_1"
+          placeholder="Answer for the question 1"
+        />
+      </div>
+      <div class="row">
+        <div class="col-sm" align="left" style="font-weight: bold">
+          Security Question 2
+        </div>
+        <div class="col-sm" lign="left">
+          <select name="question_2" id="question_2">
+            <option value="In what city were you born?">
+              In what city were you born?
+            </option>
+            <option value="What is the name of your favorite pet?">
+              What is the name of your favorite pet?
+            </option>
+            <option value="What is your mother's maiden name?">
+              What is your mother's maiden name?
+            </option>
+            <option value="What high school did you attend?">
+              What high school did you attend?
+            </option>
+            <option value="What is the name of your first school?">
+              What is the name of your first school?
+            </option>
+            <option value="What was the make of your first car?">
+              What was the make of your first car?
+            </option>
+            <option value="What was your favorite food as a child?">
+              What was your favorite food as a child?
+            </option>
+            <option value="Where did you meet your spouse?">
+              Where did you meet your spouse?
+            </option>
+          </select>
+        </div>
+        <div class="col-sm" align="left" style="font-weight: bold">Answer</div>
+        <div class="col-sm" align="left">
+          <input
+            type="text"
+            name="answer_2"
+            id="answer_2"
+            placeholder="Answer for the question 2"
+          />
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="margin-top: 25px">
+        <table>
+          <tr>
+            <!-- <td style="font-weight: bold">Captcha code</td> -->
+            <td
+              align="center"
+            >
+              {{captcha_code}}
+            </td>
+          </tr>
+          <!-- <tr>
+            <td style="font-weight: bold; padding: 10px">Enter Captcha Code</td>
+            <td>
+              <input
+                type="text"
+                name="captcha_typed"
+                id="captcha_typed"
+                style="margin-top: 10px"
+              />
+            </td>
+          </tr> -->
+        </table>
+      </div>
+      <button class="btn btn-success" style="margin-top: 25px"> <i class="bi bi-person-plus-fill"></i> Sign up</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

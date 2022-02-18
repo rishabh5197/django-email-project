@@ -1,0 +1,41 @@
+.mainbody {
+  height: 400px;
+  border: 1px solid rgba(0, 0, 0, 0.424);
+  margin: 5%;
+  display: grid;
+  grid-template-columns: repeat(2, 2fr);
+  box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.308);
+}
+
+.mainbody > div {
+  /* border: 1px solid black; */
+  margin: 2%;
+}
+.image {
+  margin-top: 5%;
+  height: 250px;
+  width: 250px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: bold;
+  text-decoration: underline;
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.623);
+  /* border-bottom: 1px solid black; */
+}
+
+.table {
+  width: 100%;
+}
+
+
+
+@media only screen and (max-width: 600px) {
+  .mainbody {
+    height: 720px;
+    display: grid;
+    grid-template-columns: none;
+    grid-template-rows: repeat(2, 2fr);
+  }
+}

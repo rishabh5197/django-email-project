@@ -1,0 +1,13 @@
+.body {
+  /* border: 1px solid black; */
+  margin: 2%;
+  height: auto;
+}
+
+.row{
+    width:75%;
+}
+
+.row>div{
+    margin-top: 20px;   
+}

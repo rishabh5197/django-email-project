@@ -1,0 +1,76 @@
+{% extends "administrative/base.html" %}
+<!-- Extending base.html -->
+{% load static %}
+<!-- loading static -->
+
+<!-- title block -->
+{% block title %} delete mail members {% endblock %}
+
+<!-- Css block  -->
+{% block css %}
+<link
+  rel="stylesheet"
+  href="{% static 'administrative/css/deletemembers.css'%}"
+/>
+{% endblock %}
+<!-- Main content block  -->
+
+{% block content%}
+<div class="mainbody">
+  <div>
+    <table class="tableclass">
+      <thead>
+      <tr style='background-color: royalblue;color:white;'>
+        <th>Sr No.</th>
+        <th>Name</th>
+        <th>Email Address</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in all_members %}
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{i.name}}</td>
+        <td>{{i.email_address}}</td>
+        <td><a href="/administrative/deleteemail/{{i.email_address}}"><i class="bi bi-trash-fill"></i></a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
+</div>
+<div align="center">
+  <a href="/administrative/dashboard">
+    <button class="btn btn-info">
+      <i class="bi bi-arrow-left-circle" style="font-size: 16px"> </i>Go Back
+    </button>
+  </a>
+</div>
+{% endblock %}
+{% block script %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css"
+/>
+<script
+  type="text/javascript"
+  charset="utf8"
+  src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"
+></script>
+<script>
+  $(document).ready(function () {
+    $(".tableclass").DataTable({
+      'aLengthMenu': [
+        [3, 5, 10, 25, -1],
+        [3, 5, 10, 25, "ALL"],
+      ],
+      'iDisplayLength': 5,
+    });
+  });
+</script>
+{% endblock %}

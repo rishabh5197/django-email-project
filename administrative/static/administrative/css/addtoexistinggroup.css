@@ -1,0 +1,11 @@
+.mainbody {
+  margin: 2%;
+}
+
+.mainbody > div {
+  margin: 2%;
+}
+
+.tableclass {
+  width: 80%;
+}

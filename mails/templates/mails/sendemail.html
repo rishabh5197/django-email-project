@@ -1,0 +1,200 @@
+{% extends "mails/basehtml.html" %} {% load static %} {% block title%} Send an
+Email {% endblock %} {% block css %}
+<link rel="stylesheet" href="{% static 'mails/css/sendemail.css' %}" />
+{% endblock %} {% block content %}
+<div class="mainbody">
+  <!-- <div align="center">
+    <img src='{% static "mails/images/email body.svg" %}' class="images" />
+  </div> -->
+  <div>
+    <table class="table">
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %} {% if msg%}
+        <tr align="center">
+          <p style="color: red">{{msg}}</p>
+        </tr>
+        {% endif %}
+        <tr align="center">
+          <th colspan="2">Send an email</th>
+        </tr>
+        <tr>
+          <td>To</td>
+          <td>
+            <input
+              type="text"
+              name="to"
+              id="title"
+              class="widths"
+              placeholder="abc@gmail.com"
+              autocomplete="off"
+              {%comment%}
+              list="email_list"
+              {%endcomment%}
+            />
+            <datalist id="email_list"> </datalist>
+          </td>
+        </tr>
+        <tr></tr>
+
+        <tr>
+          <td colspan="2">
+            {% for i in groups %} {% if forloop.first %}
+            <div class="row">
+              {% endif %}
+              <div class="col">
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="check"
+                    name="check"
+                    value="{{i.group_name}}"
+                    autocomplete="off"
+                  />
+                  <label class="form-check-label" for="check"
+                    >{{i.group_name}}</label
+                  >
+                </div>
+              </div>
+              {% if forloop.counter|divisibleby:6 %}
+            </div>
+            <div class="row">{% endif %} {% if forloop.last %}</div>
+            {% endif %} {% endfor %}
+          </td>
+        </tr>
+        <tr>
+          <td>CC</td>
+          <td>
+            <input
+              type="text"
+              name="cc"
+              id="cc"
+              class="widths"
+              placeholder="abc@gmail.com"
+              autocomplete="off"
+              {%comment%}
+              list="email_list"
+              {%endcomment%}
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>BCC</td>
+          <td>
+            <input
+              type="text"
+              name="bcc"
+              id="BCC"
+              class="widths"
+              placeholder="abc@gmail.com"
+              autocomplete="off"
+              {%comment%}
+              list="email_list"
+              {%endcomment%}
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Title</td>
+          <td>
+            {% if title %}
+
+            <input
+              type="text"
+              name="title"
+              id="title"
+              class="widths"
+              placeholder="Subject of Email"
+              autocomplete="off"
+              value="{{title}}"
+            />
+
+            {% else %}
+            <input
+              type="text"
+              name="title"
+              id="title"
+              class="widths"
+              placeholder="Subject of Email"
+              value="{{title}}"
+            />
+            {% endif%}
+          </td>
+        </tr>
+        <tr>
+          <td>Description</td>
+          <td>
+            <!-- <textarea
+              name="description"
+              id=""
+              cols="70"
+              rows="5"
+              placeholder="Body part of your mail"
+            ></textarea> -->
+            {{form.describe}} {{form.media}}
+          </td>
+        </tr>
+        <tr>
+          <td>Add Attachments</td>
+          <td>
+            <input
+              type="file"
+              name="document"
+              id="document"
+              accept=".jpg,.png,.pdf,.bmp,.ico,.gif,.jpeg,"
+            />
+          </td>
+        </tr>
+        <tr align="center">
+          <td colspan="2">
+            <button type="submit" class="btn btn-outline-primary">
+              <i class="bi bi-send-fill"></i> Send email
+            </button>
+          </td>
+        </tr>
+      </form>
+      <tr align="center">
+        <td colspan="2">
+          <a href="/selection"
+            ><button class="btn btn-danger">
+              <i class="bi bi-arrow-left-circle"></i> Go Back
+            </button></a
+          >
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- <div class="mainbody" >
+  <form method="POST">
+    {% csrf_token %}
+    {{form.describe}} 
+    {{form.media}}
+  <div align='center'>
+    <button class='btn btn-success'>
+      Submit Form 
+    </button>
+  </div>
+</form>
+</div> -->
+
+{% endblock %} {% block script %}
+<script type="text/javascript">
+  let email_address_loading = "{{json_data|escapejs}}";
+  // console.log(email_address_loading.split(','))
+  // console.log(typeof(email_address_loading.split(',')))
+  for (i in email_address_loading.split(",")) {
+    // console.log(len);
+    email_add = email_address_loading.split(",")[i].slice(20, -2);
+    document.getElementById(
+      "email_list"
+    ).innerHTML += `<option value="${email_add}">${email_add}</option>`;
+  }
+</script>
+
+{% if msg %}
+<script>
+  swal("{{msg}}");
+</script>
+{% endif %} {% endblock %}

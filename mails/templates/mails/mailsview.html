@@ -1,0 +1,74 @@
+{% extends "mails/basehtml.html" %}
+
+<!-- loading static -->
+{% load static %}
+<!-- title -->
+{% block title %} mails of {{employee_id}} {% endblock %}
+
+<!-- Main CSS -->
+{% block css %}
+<link rel="stylesheet" href="{% static 'mails\css\mails.css' %}" />
+{% endblock %}
+
+<!-- Main content -->
+{% block content%}
+<div class="mainbody">
+  <div>
+    <h2>Responsive Table</h2>
+    <div class="table-wrapper">
+      <table class="fl-table">
+        <thead>
+          <tr>
+            <th>Sr No.</th>
+            <th>Mail title</th>
+            <th>Mailed to</th>
+            <th>Date</th>
+            <th>Time</th>
+            <!-- <th>Header 5</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in mails %}
+          <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.subject}}</td>
+            <td>{{i.to|slice:":60"}}</td>
+            <td>{{i.date}}</td>
+            <td>{{i.time}}</td>
+            <!-- <td>Content 1</td> -->
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+{% comment %} 
+ this is for back button....
+{% endcomment %}
+
+<div align="center">
+  <a href="/selection"><button class="btn btn-info">
+      <i class="bi bi-arrow-left-circle"></i>&emsp;Go back
+    </button></a
+  >
+</div>
+{% endblock %}
+
+
+
+{% block script %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"></script>
+<script>
+$(document).ready( function () {
+    $('.fl-table').DataTable();
+} );
+</script>
+{% endblock%}

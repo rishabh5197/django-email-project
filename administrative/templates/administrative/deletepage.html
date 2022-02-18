@@ -1,0 +1,77 @@
+{% extends "administrative/base.html" %} {% load static %} {% block title %}
+delete {{employee_id}} {% endblock %}
+
+<!-- Css -->
+{% block css %}
+<link
+  rel="stylesheet"
+  href="{% static 'administrative/css/deletepage.css' %}"
+/>
+{% endblock %}
+
+<!-- Content block -->
+{% block content %} {% for i in user_data %}
+<div class="mainbody">
+  <div>
+    <h3 style="text-shadow: 0px 0px 10px">Employee ID</h3>
+    <h1 style="text-shadow: 0px 0px 5px">{{i.employee_id}}</h1>
+  </div>
+  <table class="table">
+    <tr align="center">
+      <td colspan="3"><h2>Delete Profile</h2></td>
+    </tr>
+    {% if msg%}
+    <tr>
+      <td colspan="3"><p style="color: green">{{msg}}</p></td>
+    </tr>
+    {% endif %}
+
+    <tr>
+      <td scope="col"><b>Name</b></td>
+      <td scope="col"><b>:</b></td>
+      <td>{{i.name|safe}}</td>
+    </tr>
+    <tr>
+      <td scope="col"><b>Employee Id</b></td>
+      <td scope="col"><b>:</b></td>
+      <td>{{i.employee_id}}</td>
+    </tr>
+    <tr>
+      <td scope="col"><b>Email Address</b></td>
+      <td scope="col"><b>:</b></td>
+      <td>{{i.email_id}}</td>
+    </tr>
+    <tr>
+      <td scope="col"><b>Status</b></td>
+      <td scope="col"><b>:</b></td>
+      <!-- <td>{% if i.status is True%} active {% else %} Inactive {%endif%}</td> -->
+      <td>{{i.status}}</td>
+    </tr>
+    <tr>
+      <td scope="col"><b>Mobile Number</b></td>
+      <td scope="col"><b>:</b></td>
+      <td>{{i.mobile_number}}</td>
+    </tr>
+    <tr>
+      <td scope="col"><b>Attempts</b></td>
+      <td scope="col"><b>:</b></td>
+      <td>{{i.attempts}}</td>
+    </tr>
+    <tr align="center">
+      <td colspan="3">
+        <form method="POST">
+            {% csrf_token %}
+          <button type="submit" class="btn btn-dark"> <i class="bi bi-trash-fill" style="font-size:16px;"></i>  Delete</button>
+        </form>
+      </td>
+    </tr>
+  </table>
+</div>
+<div align="center">
+  <a href="/administrative/dashboard"
+    ><button class="btn btn-danger">
+      <i class="bi bi-arrow-left-circle" style="font-size: 15px"></i> Go Back
+    </button></a
+  >
+</div>
+{% endfor %} {% endblock%}

@@ -1,0 +1,29 @@
+.mainbody {
+  /* border: 1px solid black; */
+  margin: 2%;
+}
+
+.mainbody > div {
+  margin: 2%;
+}
+
+.tableclass {
+  width: 100%;
+}
+tr,
+td {
+  padding: 2%;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(255, 0, 0, 0.486);
+}
+
+tr:nth-child(odd) {
+  background-color: rgba(0, 0, 0, 0.356);
+}
+
+tr:hover {
+  background-color: rgba(0, 128, 0, 0.205);
+  color: black;
+}

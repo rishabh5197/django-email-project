@@ -1,0 +1,69 @@
+{% extends "administrative/base.html" %}
+<!-- extending base.html file -->
+
+{% load static %}
+<!-- loading static data -->
+
+{% block title %} add members to {{group_name}} group {% endblock %}
+
+<!-- linking css -->
+{% block css%}
+<link
+  rel="stylesheet"
+  href="{% static 'administrative/css/addtoexistinggroup.css' %}"
+/>
+{% endblock %}
+
+<!-- loading main content -->
+
+{% block content %}
+<div class="mainbody">
+  <div align="center">
+    <h2>Add Members to {{group_name}}</h2>
+  </div>
+  <div align="center">
+    <form method="POST">
+      <table class="tableclass">
+        <tr align="center">
+          <td style="font-size: 1.5rem; font-weight: bold">
+            Members that can be added
+          </td>
+        </tr>
+        {% csrf_token %} {% for i in users_to_be_added %}
+        <tr align="center">
+          <td>
+            <div class="form-check form-switch">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="check"
+                name="check"
+                value="{{i}}"
+              />
+              <label class="form-check-label" for="check">{{i}}</label>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+        <tr align="center">
+          <td>
+            <button class="btn btn-success">
+              <i class="bi bi-person-plus-fill" style="font-size: 16px"></i> Add
+              Members to group
+            </button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+<div align="center">
+  <a href="/administrative/editgroupdetails/{{group_name}}">
+    <button class="btn btn-info">
+      <i class="bi bi-arrow-left-circle" style="font-size: 16px"></i>&nbsp; go
+      back
+    </button>
+  </a>
+</div>
+
+{% endblock %}

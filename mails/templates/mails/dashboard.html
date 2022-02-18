@@ -1,0 +1,16 @@
+<!-- Extending the html file -->
+{% extends "mails/basehtml.html" %}
+
+<!-- loading static -->
+{% load static %}
+
+<!-- Loading css -->
+{% block css %}
+<link rel="stylesheet" href="{% static 'mails/css/dashboard.css' %}" />
+{% endblock %} 
+<!--  -->
+{% block content %}
+<div class="mainbody">
+  <div>{{name}}</div>
+</div>
+{% endblock%}

@@ -1,0 +1,95 @@
+{% extends "mails/basehtml.html" %}
+<!-- extending and loading static -->
+{% load static %}
+<!-- title block -->
+{% block title %} Forget Page {% endblock %}
+<!-- css block -->
+{% block css %}
+<link rel="stylesheet" href="{% static 'mails/css/forgetpage.css' %}" />
+{% endblock %}
+<!-- block content -->
+
+{% block content %}
+<form method="post">
+  {% csrf_token %}
+  <div class="mainbody">
+    <div class="alert alert-info" role="alert">Forget Page</div>
+    <div>
+      <label for="email_address">Email address</label>
+      {% if email_address %}
+      <input
+        type="email"
+        class="form-control"
+        id="email_address"
+        name="email_address"
+        aria-describedby="emailHelp"
+        placeholder="Enter email"
+        value="{{email_address}}"
+        disabled
+      />
+      {% else %}
+      <input
+        type="email"
+        class="form-control"
+        id="email_address"
+        name="email_address"
+        aria-describedby="emailHelp"
+        placeholder="Enter email"
+      />
+      {% endif %}
+    </div>
+    {% if question_1 %}
+    <br />
+    <hr style="height: 5px; background-color: black" />
+    {% if answer_1 %}
+    <div>
+      <p class="question">{{question_1}}</p>
+      <input
+        type="text"
+        name="answer_1"
+        id="answer_1"
+        class="form-control"
+        value="{{answer_1}}"
+        disabled
+      />
+    </div>
+    <br />
+    <div>
+      <p class="question">{{question_2}}</p>
+      <input
+        type="text"
+        name="answer_2"
+        id="answer_2"
+        class="form-control"
+        value="{{answer_2}}"
+        disabled
+      />
+    </div>
+    <hr style="height: 5px; background-color: black" />
+    {% else %}
+    <div>
+      <p class="question">{{question_1}}</p>
+      <input type="text" name="answer_1" id="answer_1" class="form-control" />
+    </div>
+    <br />
+    <div>
+      <p class="question">{{question_2}}</p>
+      <input type="text" name="answer_2" id="answer_2" class="form-control" />
+    </div>
+
+    <div align="center">
+      <button class="btn btn-primary" type="submit" name="validate_answers">
+        Validate my answers
+      </button>
+    </div>
+    {% endif } 
+    {% else %}
+    <div align="center">
+      <button class="btn btn-primary" type="submit" name="fetch_id">
+        Fetch Security Questions
+      </button>
+    </div>
+    {%endif%}
+  </div>
+</form>
+{% endblock %}

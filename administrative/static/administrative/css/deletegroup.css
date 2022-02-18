@@ -1,0 +1,11 @@
+.mainbody{
+    margin:2%;
+    border:1px solid red;
+}
+.mainbody>div{
+    margin:2%;
+}
+
+.maintable{
+    width: 50%;
+}

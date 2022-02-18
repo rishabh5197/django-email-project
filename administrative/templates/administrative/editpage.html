@@ -1,0 +1,79 @@
+{% extends "administrative/base.html" %}
+<!--  -->
+{% load static %}
+<!--  -->
+{% block title %} Edit {{employee_id}} {% endblock %}
+<!--  -->
+{% block css %}
+<link rel="stylesheet" href="{% static 'administrative/css/edit.css' %}" />
+{% endblock %}
+<!--  -->
+{% block content %} {% for i in user_data %}
+<div class="mainbody">
+  <div>
+    <h3 style="text-shadow: 0px 0px 10px">Employee ID</h3>
+    <h1 style="text-shadow: 0px 0px 5px">{{i.employee_id}}</h1>
+  </div>
+  <table class="table">
+    <form method="post">
+      {% csrf_token %}
+      <tr align="center">
+        <td colspan="3"><h2>Edit Page</h2></td>
+      </tr>
+      {% if msg%}
+      <tr>
+        <td colspan="3"><p style="color: green">{{msg}}</p></td>
+      </tr>
+      {% endif %}
+      <tr>
+        <td scope="col"><b>Name</b></td>
+        <td scope="col">:</td>
+        <td>{{form.name|safe}}</td>
+      </tr>
+      <tr>
+        <td scope="col"><b>Employee Id</b></td>
+        <td scope="col">:</td>
+        <td>{{i.employee_id}}</td>
+      </tr>
+      <tr>
+        <td scope="col"><b>Email Address</b></td>
+        <td scope="col">:</td>
+        <td>{{form.email_id}}</td>
+      </tr>
+      <tr>
+        <td scope="col"><b>Status</b></td>
+        <td scope="col">:</td>
+        <td>{% if i.status is True%} 
+          <p style='color:green;'>active</p> 
+            {% else %} 
+          <a href="/administrative/unblockuser/{{email_add_to_use}}" class="btn btn-primary">
+            Unblock user
+          </a> {%endif%}</td>
+        {% comment %} <td>{{form.status}}</td> {% endcomment %}
+      </tr>
+      <tr>
+        <td scope="col"><b>Mobile Number</b></td>
+        <td scope="col">:</td>
+        <td>{{form.mobile_number}}</td>
+      </tr>
+      <!-- <tr>
+        <td scope="col"><b>Attempts</b></td>
+        <td scope="col">:</td>
+        <td>{{form.attempts}}</td>
+      </tr> -->
+      <tr align="center">
+        <td colspan="3">
+          <a href="">
+            <button class="btn btn-warning"><i class="bi bi-cloud-arrow-up" style="font-size:15px;"></i> Update Details</button>
+          </a>
+        </td>
+      </tr>
+    </form>
+  </table>
+</div>
+<div align="center">
+  <a href="/administrative/dashboard"
+    ><button class="btn btn-danger"><i class="bi bi-arrow-left-circle" style='font-size:15px;'></i>  Go Back</button></a
+  >
+</div>
+{% endfor %} {% endblock%}

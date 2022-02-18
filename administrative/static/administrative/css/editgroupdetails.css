@@ -1,0 +1,31 @@
+.mainbody {
+  /* border: 1px solid red; */
+  margin: 2%;
+}
+
+.mainbody > div {
+  margin: 2%;
+  /* border: 1px solid black; */
+}
+
+.tableclass {
+  width: 80%;
+}
+
+/* td {
+  padding: 2%; 
+  border: 1px solid black; 
+} */
+
+/* tr:nth-child(odd) {
+  background-color: rgba(0, 0, 0, 0.356);
+  font-size: 1rem;
+  color: black;
+} */
+
+tr:nth-child(even) {
+  background-color: rgba(192, 192, 192, 0.157);
+}
+tr:nth-child(odd) {
+  background-color: rgba(0, 0, 0, 0.198);
+}

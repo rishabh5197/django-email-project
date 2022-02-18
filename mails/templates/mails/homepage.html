@@ -1,0 +1,145 @@
+{% extends "mails/basehtml.html" %} {% load static %} {%block title %} homepage
+{% endblock%} {% block css%}
+<link rel="stylesheet" href='{% static "mails/css/homepage.css" %}' />
+{% endblock %} {% block content %}
+<div class="username">
+  <table class="titletable">
+    <tr>
+      <td>
+        <h1>
+          Welcome<span style="color: chocolate; text-shadow: 0px 0px 5px">
+            {{user}}</span
+          >
+        </h1>
+      </td>
+      <td align="right">
+        <a href="/signout">
+          <button class="btn btn-danger" style="border: 1px solid black">
+            <i class="bi bi-door-open"></i> Logout
+          </button>
+        </a>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="body">
+  <div align="center">
+    <a href="sendemail" style="text-decoration: none">
+      <div
+        style="
+          background-color: rgba(128, 128, 128, 0.363);
+          border-radius: 50px;
+        "
+      >
+        <img src="{% static 'mails/images/writeanemail.svg'%}" class="images" />
+      </div>
+      <div>
+        <p class="paragraph">Send email</p>
+      </div>
+    </a>
+  </div>
+  <!-- <div align="center">
+    <a href="groupemail" style="text-decoration: none">
+      <div
+        style="
+          background-color: rgba(128, 128, 128, 0.363);
+          border-radius: 50px;
+        "
+      >
+        <img
+          src="{% static 'mails/images/body embedded email.svg'%}"
+          height="20px"
+          class="images"
+        />
+      </div>
+      <div>
+        <p class="paragraph">Send email to group</p>
+      </div>
+    </a>
+  </div> -->
+  <div align="center">
+    <a href="schedulemail" style="text-decoration: none">
+      <div
+        style="
+          background-color: rgba(128, 128, 128, 0.363);
+          border-radius: 50px;
+        "
+      >
+        <img src="{% static 'mails/images/modify mail.svg'%}" class="images" />
+      </div>
+      <div>
+        <p class="paragraph">Schedule Mails</p>
+      </div>
+    </a>
+  </div>
+  <div align="center">
+    <a href="storedmails" style="text-decoration: none">
+      <div
+        style="
+          background-color: rgba(128, 128, 128, 0.363);
+          border-radius: 50px;
+        "
+      >
+        <img src="{% static 'mails/images/database.svg'%}" class="images" />
+      </div>
+      <div>
+        <p class="paragraph">Mails stored in database</p>
+      </div>
+    </a>
+  </div>
+  <div align="center">
+    <a href="viewemailids" style="text-decoration: none" >
+      <div
+        style="
+          background-color: rgba(128, 128, 128, 0.363);
+          border-radius: 50px;
+        "
+      >
+        <img
+          src="{% static 'mails/images/view email ids.svg'%}"
+          class="images"
+        />
+      </div>
+      <div>
+        <p class="paragraph">Client's email address</p>
+      </div>
+    </a>
+  </div>
+  <div align="center">
+    <a href="viewgroups" style="text-decoration: none" >
+      <div
+        style="
+          background-color: rgba(128, 128, 128, 0.363);
+          border-radius: 50px;
+        "
+      >
+        <img
+          src="{% static 'mails/images/view email ids.svg'%}"
+          class="images"
+        />
+      </div>
+      <div>
+        <p class="paragraph">Groups and details</p>
+      </div>
+    </a>
+  </div>
+
+  <div align="center">
+    <a href="sentmails" style="text-decoration: none" >
+      <div
+        style="
+          background-color: rgba(128, 128, 128, 0.363);
+          border-radius: 50px;
+        "
+      >
+        <img src="{% static 'mails/images/sentmails.svg'%}" class="images" />
+      </div>
+      <div>
+        <p class="paragraph">Sent Mails</p>
+      </div>
+    </a>
+  </div>
+</div>
+
+{% endblock %}

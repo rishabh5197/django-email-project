@@ -1,0 +1,29 @@
+.mainbody {
+  /* border:1px solid black; */
+  margin: 2%;
+  height: auto;
+  display: grid;
+  /* grid-template-columns:repeat(2,2fr) */
+}
+
+.table {
+  width: 100%;
+}
+
+.widths {
+  width: 100%;
+}
+.images {
+  height: 400px;
+}
+
+.mainbody > div {
+  margin: 10px;
+  /* border:1px solid red; */
+  height: 450px;
+}
+
+table {
+  border: 5px solid rgb(47, 0, 255);
+  margin-bottom: 25px;
+}

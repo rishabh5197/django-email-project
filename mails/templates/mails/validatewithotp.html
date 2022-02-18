@@ -1,0 +1,35 @@
+{% extends 'mails/basehtml.html' %}
+<!-- extending -->
+{% load static %}
+<!-- loading static -->
+<!-- block title -->
+{% block title %} Validate OTP {% endblock %}
+<!-- block css -->
+{% block css %}
+<link rel="stylesheet" href="{% static 'mails/css/validateotp.css'%}" />
+{% endblock %} {% block content %}
+
+<form method="post">
+  {% csrf_token %}
+  <div class="mainbody">
+    <div align="center"><p class="title">OTP to access account</p></div>
+    <div class="alert alert-success" role="alert" align="center">
+      Check your mail for verification and enter <b>OTP</b> sent on your id
+    </div>
+    <div align="center">
+      <h1>OTP</h1>
+    </div>
+    <div align="center">
+      <p class="info">Enter 8 digit code sent on your email_address</p>
+    </div>
+    <div class="otpinput" align="center">
+      <input type="text" name="otp_entered" id="otp_entered" />
+    </div>
+    <div align="center">
+      <button class="btn-success" style="font-size: 20px" type="submit">
+        <i class="bi bi-check-circle-fill"></i> Verify my account
+      </button>
+    </div>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,201 @@
+{% extends 'mails/basehtml.html' %} {% load static %} {% block title %}
+databasemails {% endblock%} {% block css%}
+<style>
+  {% comment %} table{
+    width: 80%;
+  }
+  th,
+  tr,
+  td {
+    width: 100%;
+  }
+
+  tr:nth-child(even) {
+    background-color: rgba(128, 128, 128, 0.24);
+  }
+  tr:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.198);
+  } {% endcomment %}
+</style>
+
+<link rel="stylesheet" href="{% static 'mails/css/databasemail.css' %}" /> 
+{% endblock %} {% comment %} 
+
+{% block body %}
+<div style="margin-top: 2%">
+  {% for i in mails %} {% if forloop.first %}
+  <div class="row">
+    {% endif %}
+    <div class="card mb-3" style="max-width: 540px">
+      <div class="row no-gutters">
+        {% if i.attachments.url is not none %}
+        <div class="col-md-4">
+          <a
+            href="{{i.attachments.url}}"
+            target="blank"
+            download="{{i.attachment.url}}"
+            ><img
+              src="{{i.attachments.url}}"
+              class="card-img-top"
+              alt="{{i.title}}"
+          /></a>
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">{{i.title}}</h5>
+            <p class="card-text">{{i.describe|safe}}</p>
+            <p class="card-text">
+              <small class="text-muted">Last updated 3 mins ago</small>
+            </p>
+            <div align="center">
+              <a href="sendemail/{{i.title}}" class="btn btn-primary"
+                >Use for Individual</a
+              >
+              <a
+                href="schedulemail/{{i.title}}"
+                class="btn btn-success"
+                style="margin-top: 10px"
+                >Use for schedule</a
+              >
+            </div>
+          </div>
+          {% if forloop.counter|divisibleby:2 %}
+        </div>
+      </div>
+    </div>
+    <div class="row">{% endif %} {% if forloop.last %}</div>
+    {% endif %} {% endfor %}
+  </div>
+  <div align="center">
+    <a href="/selection">
+      <button class="btn btn-danger">
+        <i class="bi bi-arrow-left-circle"></i> Go Back
+      </button>
+    </a>
+  </div>
+  {% endblock %} {% endcomment %} 
+  
+  {% block content %}
+  <div align="center" style='margin:2%;'>
+    <table
+      class='table table-striped'
+      style='width:80%;'
+    >
+    <thead>
+      <tr>
+        <th style="background-color: black; color: white">Sr No.</th>
+        <th style="background-color: black; color: white">Title</th>
+        <th style="background-color: black; color: white">Description</th>
+        <th style="background-color: black; color: white">Attachment</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in mails %}
+      <tr style="border: 1px solid #c19c81">
+        <td>{{ forloop.counter }}</td>
+        <td>{{i.title}}</td>
+        <td>{{i.describe|safe|slice:':10'}}</td>
+        <td>
+          {% if i.attachments %}
+          <a
+            href="{{i.attachments.url}}"
+            target="blank"
+            download="{{i.attachments.url}}"
+            >{{i.attachments.name|slice:":20"}}</a
+          >
+          {% endif %}
+        </td>
+      </tr>
+
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
+
+{% comment %}
+  <div style="margin-top: 2%">
+    {% for i in mails %} {% if forloop.first %}
+    <div class="row">
+      {% endif %}
+      <div class="card" style="width: 18rem">
+        {% if i.attachments.url is not none %} {% if i.extension == 'pdf' or
+        i.extension == 'docx'%}
+        <a
+          href="{{i.attachments.url}}"
+          target="blank"
+          download="{{i.attachment.url}}"
+        >
+          <img
+            src="{% static 'mails/images/default file.svg'%}"
+            class="card-img-top"
+            alt="{{i.title}}"
+        /></a>
+        <p>Click on image to download file</p>
+        <p>
+          {% else %}
+          <a
+            href="{{i.attachment.url}}"
+            target="blank"
+            download="{{i.attachment.url}}"
+          >
+            <img
+              src="{{i.attachment.url}}"
+              class="card-img-top"
+              alt="{{i.title}}"
+          /></a>
+          {% endif %}
+        </p>
+
+        <div class="card-body">
+          <h5 class="card-title">{{i.title}}</h5>
+          <p class="card-text">{{i.describe|safe}}</p>
+          <div align="center">
+            <a href="sendemail/{{i.title}}" class="btn btn-primary"
+              >Use for Individual</a
+            >
+            <a
+              href="schedulemail/{{i.title}}"
+              class="btn btn-success"
+              style="margin-top: 10px"
+              >Use for schedule</a
+            >
+          </div>
+        </div>
+      </div>
+      {% if forloop.counter|divisibleby:3 %}
+    </div>
+    <div class="row">{% endif %} {% if forloop.last %}</div>
+    {% endif %} {% endfor %}
+  </div>
+  {% endcomment %}
+
+  <div align="center">
+    <a href="/selection">
+      <button class="btn btn-danger">
+        <i class="bi bi-arrow-left-circle"></i> Go Back
+      </button>
+    </a>
+  </div>
+  {% endblock %}
+
+  <!-- {% if i.attachments|slice:"-4:" is ".jpg" or i.attachments|slice:"-4:" is ".JPG" or i.attachments|slice:"-4:" is ".png" or i.attachments|slice:"-4:" is ".PNG" or i.attachments|slice:"-5:" is ".jpeg" or i.attachments|slice:"-5:" is ".JPEG" or i.attachments|slice:"-4:" is ".bmp" or i.attachments|slice:"-4:" is ".BMP" or i.attachments|slice:"-4:" is ".ico" or i.attachments|slice:"-4:" is ".  ICO" or i.attachments|slice:"-4:" is ".gif" or i.attachments|slice:"-4:" is ".GIF" %} -->
+  <!-- {%  elif i.attachments|slice:"-4:" is ".pdf" %} -->
+  <!-- <a href="{{i.attachments.url}}" target='blank' download="{{i.attachment.url}}"><button class='btn btn-warning'>Download file</button></a> -->
+  <!-- {% else %} -->
+  <!-- <p>Nothing attached</p> -->
+  <!-- {% endif %} -->
+</div>
+
+
+{% block script %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"></script>
+<script>
+$(document).ready( function () {
+    $('.table-striped').DataTable();
+} );
+</script>
+{% endblock %}

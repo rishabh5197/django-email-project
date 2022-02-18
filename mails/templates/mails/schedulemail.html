@@ -1,0 +1,274 @@
+{% extends "mails/basehtml.html" %}
+<!-- extending data -->
+{% load static %}
+<!-- Loading static data... -->
+{% block title %} Schedule Mails {% endblock %}
+<!-- block css -->
+{% block css %}
+<link rel="stylesheet" href="{% static 'mails/css/schedulemail.css' %}" />
+{% endblock %} {% block content %}
+<div class="mainbody">
+  <!-- <div align="center">
+    <img src='{% static "mails/images/email body.svg" %}' class="images" />
+  </div> -->
+  <div>
+    <table class="table">
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %} {% if msg%}
+        <tr align="center">
+          <td colspan="2">
+            <p style="color: green; font-weight: bold">{{msg}}</p>
+          </td>
+        </tr>
+        {% endif %}
+        <tr align="center">
+          <th colspan="2">Send an email</th>
+        </tr>
+        <tr>
+          <td>To</td>
+          <td>
+            <input
+              type="text"
+              name="to"
+              id="title"
+              class="widths"
+              placeholder="abc@gmail.com"
+              autocomplete="off"
+              {% comment %} list="email_list" {% endcomment %}
+            />
+            <datalist id="email_list"> </datalist>
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2">
+            {% for i in groups %} {% if forloop.first %}
+            <div class="row">
+              {% endif %}
+              <div class="col">
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="check"
+                    name="check"
+                    value="{{i.group_name}}"
+                  />
+                  <label class="form-check-label" for="check"
+                    >{{i.group_name}}</label
+                  >
+                </div>
+              </div>
+              {% if forloop.counter|divisibleby:6 %}
+            </div>
+            <div class="row">{% endif %} {% if forloop.last %}</div>
+            {% endif %} {% endfor %}
+          </td>
+        </tr>
+
+        <tr>
+          <td>CC</td>
+          <td>
+            <input
+              type="text"
+              name="cc"
+              id="cc"
+              class="widths"
+              placeholder="abc@gmail.com"
+              autocomplete="off"
+              {% comment %} list="email_list" {% endcomment %}
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>BCC</td>
+          <td>
+            <input
+              type="text"
+              name="bcc"
+              id="BCC"
+              class="widths"
+              placeholder="abc@gmail.com"
+              autocomplete="off"
+              {% comment %} list="email_list" {% endcomment %}
+            />
+          </td>
+        </tr>
+        <tr>
+          <!-- <td>Date and time</td>
+          <td>
+            <input type="date" name="date" id="date" />
+            <input type="time" name="time" id="time" />
+          </td> -->
+          <td>Date and time</td>
+          <td>
+            <select
+              class="form-select form-select-sm"
+              aria-label=".form-select-sm example"
+              name="get_time_action"
+              id="get_time_action"
+              onchange="chooseaction(this.value)"
+            >
+              <option selected>Select the time you want to schedule</option>
+              <option value="specific_time">On A specific day and time</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+          </td>
+        </tr>
+
+        <tr id="show_specific_time">
+          <td>On which date</td>
+          <td>
+            <input type="date" name="date" id="date" />
+            <input type="time" name="time" id="time" />
+          </td>
+        </tr>
+
+        <tr id="show_daily">
+          <td>Till which date</td>
+          <td>
+            Start Date :-
+            <input type="date" name="dailystartdate" id="dailystartdate" /> End
+            Date :- <input type="date" name="dailyenddate" id="dailyenddate" />
+          </td>
+        </tr>
+
+        <tr id="show_weekly">
+          <td>Day of week</td>
+          <td>
+            Start Week:-
+            <input type="date" name="startweek" id="startweek" /> End Week :-
+            <input type="date" name="endweek" id="endweek" /> Day of week :-
+            <select name="weekday" id="weekday">
+              <option value="sunday" selected>Sunday</option>
+              <option value="monday">Monday</option>
+              <option value="tuesday">Tuesday</option>
+              <option value="wednesday">Wednesday</option>
+              <option value="thursday">Thursday</option>
+              <option value="friday">Friday</option>
+              <option value="saturday">Saturday</option>
+            </select>
+          </td>
+        </tr>
+
+        <tr id="show_monthly">
+          <td>Till which month and its date</td>
+          <td>
+            <label>Start Month : </label>
+            <select name="startmonth" id="startmonth">
+              <option value="1" selected>January</option>
+              <option value="2">February</option>
+              <option value="3">March</option>
+              <option value="4">April</option>
+              <option value="5">May</option>
+              <option value="6">June</option>
+              <option value="7">July</option>
+              <option value="8">August</option>
+              <option value="9">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+            </select>
+            <label> End Month </label>
+            <select name="endmonth" id="endmonth">
+              <option value="1" selected>January</option>
+              <option value="2">February</option>
+              <option value="3">March</option>
+              <option value="4">April</option>
+              <option value="5">May</option>
+              <option value="6">June</option>
+              <option value="7">July</option>
+              <option value="8">August</option>
+              <option value="9">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+            </select>
+            <label>Date of month </label>
+            <select name="dateofmonth" id="dateofmonth">
+              <script>
+                for (let i = 1; i < 32; i++) {
+                  document.getElementById("dateofmonth").innerHTML +=
+                    "<option value='" + i + "'>" + i + "</option>";
+                }
+              </script>
+            </select>
+          </td>
+        </tr>
+        <!-- <tr id="more_details"></tr> -->
+        <tr>
+          <td>Title</td>
+          <td>
+            {% if title %}
+
+            <input
+              type="text"
+              name="title"
+              id="title"
+              class="widths"
+              placeholder="Subject of Email"
+              value="{{title}}"
+            />
+
+            {% else %}
+            <input
+              type="text"
+              name="title"
+              id="title"
+              class="widths"
+              placeholder="Subject of Email"
+              value="{{title}}"
+            />
+            {% endif%}
+          </td>
+        </tr>
+        <tr>
+          <td>Description</td>
+          <td>
+            <!-- <textarea
+              name="description"
+              id=""
+              cols="70"
+              rows="5"
+              placeholder="Body part of your mail"
+            ></textarea> -->
+            {{form.describe}} {{form.media}}
+          </td>
+        </tr>
+        <tr>
+          <td>Add Attachments</td>
+          <td>
+            <input
+              type="file"
+              name="document"
+              id="document"
+              accept=".jpg,.png,.pdf,.bmp,.ico,.gif,.jpeg,"
+            />
+          </td>
+        </tr>
+        <tr align="center">
+          <td colspan="2">
+            <button type="submit" class="btn btn-outline-primary">
+              <i class="bi bi-send-fill"></i> Send email
+            </button>
+          </td>
+        </tr>
+      </form>
+      <tr align="center">
+        <td colspan="2">
+          <a href="/selection"
+            ><button class="btn btn-danger">
+              <i class="bi bi-arrow-left-circle"></i> Go Back
+            </button></a
+          >
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+{% endblock %} {% block script %}
+<script src="{% static 'mails\js\schedulemail.js' %}"></script>
+{% endblock %}
+<!-- more_details -->

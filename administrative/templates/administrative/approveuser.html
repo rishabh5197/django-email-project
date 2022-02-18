@@ -1,0 +1,121 @@
+<!-- extending base html -->
+{% extends "administrative/base.html" %}
+<!-- loading static -->
+{% load static %}
+<!-- title block -->
+{% block title %} Approve Users {% endblock %}
+
+<!-- block css -->
+{% block css %}
+<link
+  rel="stylesheet"
+  href="{% static 'administrative/css/approveuser.css' %}"
+/>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% endblock%}
+
+<!-- main block -->
+{% block content %}
+<div class="mainbody">
+  <div class="alert alert-dark" role="alert" align="center">
+    <i class="bi bi-patch-check-fill" style="color: green; font-size: 30px"></i>
+    Allow newly created users
+  </div>
+  <div>
+    <table border="1" id="table" class="table">
+      <thead>
+      <tr>
+        <th>Sr. No</th>
+        <th>Name</th>
+        <th>Email Address</th>
+        <th>Employee ID</th>
+        <th>Action</th>
+      </tr>
+      <thead>
+      <tbody>
+      {% for i in users %}
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{i.name}}</td>
+        <td>{{i.email_id}}</td>
+        <td>{{i.employee_id}}</td>
+        <td>
+          <a href="/administrative/activate/{{i.email_id}}">
+            <button
+              class="btn btn-success"
+              id="activatebutton"
+              onclick="alert('Approving {{i.email_id}}')"
+              type="submit"
+            >
+              Activate {{i.name}}
+            </button>
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
+</div>
+
+<div align="center">
+  <a href="/administrative/dashboard"
+    ><button class="btn btn-info" >
+      <i class="bi bi-arrow-left-circle"></i> Go back
+    </button></a
+  >
+</div>
+<div style="height: 2vh"></div>
+
+{% endblock %} 
+
+
+{% block script %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script
+  type="text/javascript"
+  language="javascript"
+  src="https://code.jquery.com/jquery-3.5.1.js"
+></script>
+<!-- <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script> -->
+<script
+  type="text/javascript"
+  language="javascript"
+  src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"
+></script>
+
+<script>
+  $(document).ready(function () {
+    $(".table").DataTable({
+      aLengthMenu: [
+        [3, 5, 10, 25, -1],
+        [3, 5, 10, 25, "ALL"],
+      ],
+      iDisplayLength: 3,
+    });
+  });
+</script>
+
+
+
+
+<script>
+function clicked()
+{swal({
+  title: "Are you sure?",
+  text: "Once deleted, you will not be able to recover this imaginary file!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    swal("Poof! Your imaginary file has been deleted!", {
+      icon: "success",
+    });
+  } else {
+    swal("Your imaginary file is safe!");
+  }
+});}
+</script>
+{% endblock %}

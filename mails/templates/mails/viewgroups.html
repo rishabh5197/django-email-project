@@ -1,0 +1,81 @@
+{% extends "mails/basehtml.html" %}
+<!-- Loading Static -->
+{% load static %}
+<!-- title importing -->
+{% block title %} view groups and modification {% endblock %}
+
+<!-- CSS block -->
+{% block css %}
+<link
+  rel="stylesheet"
+  href="{% static 'mails/css/viewgroups.css' %}"
+/>
+{% endblock %}
+
+<!-- Main content -->
+{% block content %}
+<div class="mainbody" align='center'>
+  <div class="title" align="center" style='width:80%;'>
+    <h2>Groups</h2>
+  </div>
+  <div align='center' style='margin-top:15px;'>
+    <table class="table table-striped" style='width:80%;'>
+      <thead>
+      <tr style="background-color: royalblue; color: white">
+        <th>Sr. No</th>
+        <th>Group Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in all_groups %}
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td><b>{{i.group_name}}</b></td>
+        <td>
+          <a href="viewgroupdetails/{{i.group_name}}" style="text-decoration:none;"
+            ><i class="bi bi-eye-fill" style="color: olive; font-size: 15px"></i
+          > <b style="color:royalblue;">View {{i.group_name}} Members</b></a>
+          <!-- <a href="editgroupdetails/{{i.group_name}}"
+            ><i
+              class="bi bi-pencil-square"
+              style="color: yellow; font-size: 15px; margin: 10px"
+            ></i
+          ></a>
+          <a href="deletegroup/{{i.group_name}}"
+            ><i
+              class="bi bi-trash-fill"
+              style="color: purple; font-size: 15px"
+            ></i
+          ></a> -->
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
+</div>
+<div align="center">
+  <a href="/selection">
+    <button class="btn btn-info">
+      <i class="bi bi-arrow-left-circle"></i> go back
+    </button>
+  </a>
+</div>
+{% endblock %}
+
+
+
+
+{% block script %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"></script>
+<script>
+$(document).ready( function () {
+    $('.table-striped').DataTable();
+} );
+</script>
+{% endblock%}

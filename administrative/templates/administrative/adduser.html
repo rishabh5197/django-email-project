@@ -1,0 +1,92 @@
+{% extends "administrative/base.html" %} {% load static %} {% block title %} Add
+User {% endblock %} {% block css%}
+<link rel="stylesheet" href="{% static 'administrative/css/adduser.css' %}" />
+{% endblock %} {% block content %}
+<div class="navbarsecond">
+  <div>Welcome <b style="color: violet">{{name}}</b></div>
+  <div>
+    <a href="logout"
+      ><button class="btn btn-danger">
+        <i class="bi bi-door-open-fill"></i> Logout
+      </button></a
+    >
+  </div>
+</div>
+
+<!-- body part -->
+<div>
+  <form method="post">
+    <table>
+      <tr>
+        <td></td>
+      </tr>
+    </table>
+  </form>
+</div>
+<div align="center" class="table">
+  <form method="post">
+    {% csrf_token %}
+    <table class="table">
+      {% if msg %}
+      <tr align="center">
+        <td colspan="2" style="color: green"><b>{{msg}}</b></td>
+      </tr>
+      {% endif %}  
+      {% if exists_error %}
+      <tr align="center">
+        <td colspan="2" style="color: red"><b>{{exists_error}}</b></td>
+      </tr>
+      {% endif %}
+      <tr>
+        <th class="thead-dark">{{form.name.label}}</th>
+        <td>{{form.name}}</td>
+      </tr>
+      <tr>
+        <th class="thead-dark">{{form.employee_id.label}}</th>
+        <td>{{form.employee_id}}</td>
+      </tr>
+      <tr>
+        <th class="thead-dark">{{form.email_id.label}}</th>
+        <td>
+          {{form.email_id}} {% if errmsg %}
+          <p style="color: red"><b>{{errmsg}}</b></p>
+          {% endif %}
+        </td>
+      </tr>
+      <tr>
+        <th class="thead-dark">{{form.password.label}}</th>
+        <td>{{form.password}}</td>
+      </tr>
+      <tr>
+        <th class="thead-dark">{{form.status.label}}</th>
+        <td>{{form.status}}</td>
+      </tr>
+      <tr>
+        <th class="thead-dark">{{form.mobile_number.label}}</th>
+        <td>
+          {{form.mobile_number}}
+          <span></span>
+        </td>
+      </tr>
+      <tr>
+        <th class="thead-dark">{{form.attempts.label}}</th>
+        <td>{{form.attempts}}</td>
+      </tr>
+    </table>
+    <button type="submit" class="btn btn-success">
+      <i class="bi bi-arrow-right-circle" style="font-size: 15px"></i>Submit
+    </button>
+  </form>
+</div>
+<!-- Go back -->
+<div align="center">
+  <a href="dashboard"
+    ><button class="btn btn-info">
+      <i class="bi bi-arrow-left-circle"></i>&emsp;Go back
+    </button></a
+  >
+</div>
+
+<script src="{% static 'administrative/js/validations.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+body {
+  margin-top: 300px;
+}
+
+.card {
+  box-shadow: 0px 0px 25px rgb(83, 73, 73);
+  margin: 5%;
+}
+.row {
+  display: grid;
+  grid-template-columns: repeat(4, 4fr);
+}
+
+.simpletable {
+  margin: 2%;
+  width: 80%;
+}
+th,
+td {
+  padding: 15px;
+}

@@ -1,0 +1,92 @@
+{% extends "administrative/base.html" %}
+<!-- extending base html  and loading static data-->
+{% load static %}
+<!--  declaring title -->
+{% block title%} View group details {% endblock %}
+<!-- declaring css -->
+
+{% block css %}
+<link
+  rel="stylesheet"
+  href="{% static 'administrative/css/editgroupdetails.css'%}"
+/>
+{% endblock %}
+
+<!--  -->
+
+{% block content %}
+
+<div class="mainbody">
+  <div align="center" style="font-size: 2rem">
+    Members present in group :- <b> {{group_name}}</b>
+  </div>
+  <div align="right">
+    <a href="/administrative/addgroupmember/{{group_name}}">
+      <button class="btn btn-success">
+        <i class="bi bi-person-plus-fill" style="font-size: 16px"></i> Add
+        Members
+      </button></a
+    >
+  </div>
+  <div>
+    <table class="tableclass" align="center">
+      <thead>
+      <tr
+        align="center"
+        style="
+          background-color: black;
+          color: white;
+          padding: 0%;
+          font-size: 1rem;
+        "
+      >
+        <th>Sr No.</th>
+        <th>Email-Address</th>
+        <th>Name</th>
+        <th>Phone Number</th>
+        <th>Client Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in data_rendering %}
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{i.0}}</td>
+        <td>{{i.1}}</td>
+        <td>{{i.2}}</td>
+        <td>{{i.3}}</td>
+        <td>
+          <a href="/administrative/deletegroupmember/{{i.0}}/{{group_name}}"
+            ><i class="bi bi-trash-fill" style="color: blue"></i
+          ></a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
+</div>
+<div align="center">
+  <a href="/administrative/viewgroups">
+    <button class="btn btn-info">
+      <i class="bi bi-arrow-left-circle"></i> go back
+    </button>
+  </a>
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"></script>
+<script>
+$(document).ready( function () {
+    $('.tableclass').DataTable();
+} );
+</script>
+{% endblock %}

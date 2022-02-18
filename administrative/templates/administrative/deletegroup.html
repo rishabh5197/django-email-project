@@ -1,0 +1,56 @@
+{% extends "administrative/base.html" %}
+<!--  -->
+{% load static %}
+<!--  -->
+
+{% block title%} Delete group {{group_name}} {% endblock %}
+<!--  -->
+
+{% block css %}
+<link
+  rel="stylesheet"
+  href="{% static 'administrative\css\deletegroup.css' %}"
+/>
+{% endblock %}
+
+<!--  -->
+
+{% block content %}
+<div class="mainbody">
+  <div align="center">
+    <h3>Delete {{group_name}}</h3>
+  </div>
+  <div align="center">
+    <table
+      class="maintable"
+      border="1"
+      style="box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.52)"
+    >
+      <tr>
+        <td>Group Name</td>
+        <td>:</td>
+        <td>{{group_name}}</td>
+      </tr>
+      <tr>
+        <td>Number of members in group</td>
+        <td>:</td>
+        <td>{{len_of_group}}</td>
+      </tr>
+    </table>
+  </div>
+  <div align="center">
+    <a href="/administrative/confirmdelete/{{group_name}}">
+      <button class="btn btn-danger">
+        <i class="bi bi-trash-fill"></i> Delete Group
+      </button></a
+    >
+  </div>
+</div>
+<div align="center">
+  <a href="/administrative/viewgroups">
+    <button class="btn btn-info">
+      <i class="bi bi-arrow-left-circle"></i> go back
+    </button>
+  </a>
+</div>
+{% endblock %}

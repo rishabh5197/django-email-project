@@ -1,0 +1,87 @@
+{% extends "administrative/base.html" %}
+<!-- static -->
+
+{% load static %}
+<!-- title -->
+
+{%block title %} login {% endblock%}
+<!-- css -->
+
+{% block css%}
+<link rel="stylesheet" href='{% static "administrative/css/login.css" %}' />
+{% endblock %}
+
+<!-- main content -->
+{% block content %}
+
+<div class="mainbody">
+  <div>
+    <div align="center">
+      <p class="title">Login</p>
+    </div>
+    {% if msg%}
+    <div class="alert alert-danger">
+      <p>{{msg}}</p>
+    </div>
+    <script>
+      swal("{{msg}}");
+    </script>
+    {% else %}
+    <div></div>
+    {%endif%}
+
+    <div>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table class="table">
+          <tr>
+            <td>
+              <label> Username </label>
+            </td>
+            <td>
+              <input
+                type="text"
+                name="username"
+                id="username"
+                placeholder="Username"
+                autocomplete="off"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>Password</td>
+            <td>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Password"
+                autocomplete="off"
+              />
+            </td>
+          </tr>
+          <tr align="center">
+            <td colspan="2">
+              <button type="submit" class="btn btn-success">Login</button>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </div>
+  <div
+    align="center"
+    style="
+      background-color: rgba(255, 228, 196, 0.685);
+      box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.445);
+    "
+  >
+    <input
+      class="image"
+      type="image"
+      src="{% static 'administrative/images/admin image.svg' %}"
+      alt="admin login Image"
+    />
+  </div>
+</div>
+{% endblock %}

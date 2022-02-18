@@ -1,0 +1,172 @@
+{% extends "administrative/base.html" %} {% load static %} {% block title %}
+Dashboard {% endblock %} {% block css%}
+<link
+  rel="stylesheet"
+  href="{% static 'administrative/css/admindashboard.css' %}"
+/>
+{% endblock %} {% block content %}
+
+<div class="navbarsecond">
+  <div>Welcome <b style="color: violet">{{name}}</b></div>
+  <div>
+    <a href="logout"
+      ><button class="btn btn-danger">
+        <i class="bi bi-door-open-fill"></i> Logout
+      </button></a
+    >
+  </div>
+</div>
+
+<div class="users">
+  <div>
+    <div align="center">
+      <b>Users Registered</b>
+    </div>
+    <table border="0" class="table table-sm">
+      <thead>
+        <tr align="center" scope="col" style="background-color: cornflowerblue">
+          <th scope="col"><b>Sr No.</b></th>
+          <th scope="col"><b>Name</b></th>
+          <th scope="col"><b>Email Address</b></th>
+          <th scope="col"><b>Employee ID</b></th>
+          <th scope="col"><b>Status</b></th>
+          <th scope="col"><b>Actions</b></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          {% for j in db %}
+          <td><b>{{forloop.counter}}.</b></td>
+          <td>{{j.name}}</td>
+          <td>{{j.email_id}}</td>
+          <td>{{j.employee_id}}</td>
+          {% if j.status is True %}
+          <td style="color: forestgreen">Active</td>
+          {% else %}
+          <td style="color: red">Inactive</td>
+          {% endif %}
+          <td>
+            <a href="edit/{{j.employee_id}}"
+              ><i class="bi bi-pencil-square" style="color: goldenrod"></i
+            ></a>
+            <a href="delete/{{j.employee_id}}"
+              ><i class="bi bi-trash-fill" style="color: red"></i
+            ></a>
+            <a href="view/{{j.employee_id}}"
+              ><i class="bi bi-eye" style="color: green"></i
+            ></a>
+            <a href="changepassword/{{j.employee_id}}"
+              ><i class="bi bi-key"></i
+            ></a>
+            <a href="mails/{{j.employee_id}}"
+              ><i
+                class="bi bi-envelope-check-fill"
+                style="color: rgb(109, 2, 248)"
+              ></i
+            ></a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      {% comment %}
+      <tr>
+        <td colspan="4">
+          {% for i in paginator.page_range %}
+          <ul class="pagination">
+            {% if i == page_number %}
+            <li class="page-item active">{% else %}</li>
+
+            <li class="page-item">
+              {% endif %}
+              <a class="page-link" href="?page={{i}}">{{i}}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </td>
+      </tr>
+      {% endcomment %}
+    </table>
+  </div>
+  <div align="center">
+    <div>
+      <p class="title">Approve user</p>
+    </div>
+    <a href="approveuser"><i class="bi bi-person-check-fill"></i></a>
+  </div>
+</div>
+
+<div class="group">
+  <a href="/administrative/creategroup">
+    <div style align="center">
+      <img
+        src="{% static 'administrative/images/create group.svg' %}"
+        class="groupimage"
+      />
+      <div align="center">
+        <p style="color: black; font-weight: bold">Create Group</p>
+      </div>
+    </div>
+  </a>
+  <a href="/administrative/viewgroups">
+    <div align="center">
+      <img
+        src="{% static 'administrative/images/manage groups.svg' %}"
+        class="groupimage"
+      />
+    </div>
+    <div align="center">
+      <p style="color: black; font-weight: bold">Manage and View groups</p>
+    </div>
+  </a>
+  <a href="/administrative/addmember">
+    <div align="center">
+      <img
+        src="{% static 'administrative/images/add members.svg' %}"
+        class="groupimage"
+      />
+    </div>
+    <div align="center">
+      <p style="color: black; font-weight: bold">
+        Add Members and Email Address
+      </p>
+    </div>
+  </a>
+
+  <a href="/administrative/deletemembers">
+    <div align="center">
+      <img
+        src="{% static 'administrative/images/delete members.svg' %}"
+        class="groupimage"
+      />
+    </div>
+    <div align="center">
+      <p style="color: black; font-weight: bold">Remove Members from list</p>
+    </div>
+  </a>
+</div>
+{% endblock%} {% block script %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css"
+/>
+<script
+  type="text/javascript"
+  charset="utf8"
+  src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"
+></script>
+<script>
+  $(document).ready(function () {
+    $(".table-sm").DataTable({
+      'aLengthMenu': [
+        [3, 5, 10, 25, -1],
+        [3, 5, 10, 25, "ALL"],
+      ],
+      'iDisplayLength': 3,
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,13 @@
+.mainbody{
+    border: solid rgba(0, 0, 0, 0.418);
+    margin: 2%;
+}
+
+.mainbody>div{
+    margin:2%;
+    /* border: solid black; */
+}
+
+tr{
+    margin-top: 10px;
+}

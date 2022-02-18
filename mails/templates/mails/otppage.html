@@ -1,0 +1,38 @@
+{% extends "mails/basehtml.html" %}
+<!-- extending -->
+{% load static %}
+<!-- loading static -->
+<!-- title block -->
+{% block title %} OTP verification page {% endblock %}
+<!-- block css -->
+
+{% block css%}
+<link rel="stylesheet" href="{% static 'mails/css/otppage.css'%}" />
+{% endblock %}
+
+<!-- block main  -->
+
+{% block content%}
+<form method="post">
+  {% csrf_token %}
+  <div class="mainbody">
+    <div class="alert alert-success" role="alert" align="center">
+      Check your mail for verification and enter <b>OTP</b> sent on your id
+    </div>
+    <div align="center">
+      <h1>OTP</h1>
+    </div>
+    <div align="center">
+      <p class="info">Enter 8 digit code sent on your email_address</p>
+    </div>
+    <div class="otpinput" align="center">
+      <input type="text" name="otp_entered" id="otp_entered" />
+    </div>
+    <div align="center">
+      <button class="btn-success" style="font-size: 20px" type="submit">
+        <i class="bi bi-check-circle-fill"></i> Verify my account
+      </button>
+    </div>
+  </div>
+</form>
+{% endblock %}
