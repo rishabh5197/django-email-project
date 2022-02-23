@@ -23,12 +23,16 @@
   </div>
   <div align="center">
     <form method="POST">
+      {% csrf_token %}
       <table class="tableclass">
+        <thead>
         <tr align="center">
           <td style="font-size: 1.5rem; font-weight: bold">
             Members that can be added
           </td>
         </tr>
+      </thead>
+      <tbody>
         {% csrf_token %} {% for i in users_to_be_added %}
         <tr align="center">
           <td>
@@ -45,6 +49,7 @@
           </td>
         </tr>
         {% endfor %}
+        </tbody>
         <tr align="center">
           <td>
             <button class="btn btn-success">
@@ -53,6 +58,7 @@
             </button>
           </td>
         </tr>
+      
       </table>
     </form>
   </div>
@@ -65,5 +71,34 @@
     </button>
   </a>
 </div>
+
+{% endblock %}
+
+
+{% block script %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css"
+/>
+<script
+  type="text/javascript"
+  charset="utf8"
+  src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"
+></script>
+<script>
+  $(document).ready(function () {
+    $(".tableclass").DataTable({
+      aLengthMenu: [
+        [3, 5, 10, 25, -1],
+        [3, 5, 10, 25, "ALL"],
+      ],
+      iDisplayLength: 3,
+    });
+  });
+</script>
 
 {% endblock %}

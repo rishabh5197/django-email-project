@@ -31,39 +31,42 @@
   <div>
     <table class="tableclass" align="center">
       <thead>
-      <tr
-        align="center"
-        style="
-          background-color: black;
-          color: white;
-          padding: 0%;
-          font-size: 1rem;
-        "
-      >
-        <th>Sr No.</th>
-        <th>Email-Address</th>
-        <th>Name</th>
-        <th>Phone Number</th>
-        <th>Client Name</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for i in data_rendering %}
-      <tr>
-        <td>{{forloop.counter}}</td>
-        <td>{{i.0}}</td>
-        <td>{{i.1}}</td>
-        <td>{{i.2}}</td>
-        <td>{{i.3}}</td>
-        <td>
-          <a href="/administrative/deletegroupmember/{{i.0}}/{{group_name}}"
-            ><i class="bi bi-trash-fill" style="color: blue"></i
-          ></a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
+        <tr
+          align="center"
+          style="
+            background-color: black;
+            color: white;
+            padding: 0%;
+            font-size: 1rem;
+          "
+        >
+          <th>Sr No.</th>
+          <th>Email-Address</th>
+          <th>Name</th>
+          <th>Phone Number</th>
+          <th>Client Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in data_rendering %}
+        <tr>
+          <td>{{forloop.counter}}</td>
+          <td>{{i.0}}</td>
+          <td>{{i.1}}</td>
+          <td>{{i.2}}</td>
+          <td>{{i.3}}</td>
+          <td>
+            <i
+              id="{{i.0}}"
+              class="bi bi-trash-fill"
+              style="color: blue"
+              onclick="clicked(this.id)"
+            ></i>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
   </div>
 </div>
@@ -75,18 +78,63 @@
   </a>
 </div>
 
-{% endblock %}
-
-
-{% block script %}
+{% endblock %} {% block script %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"></script>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css"
+/>
+<script
+  type="text/javascript"
+  charset="utf8"
+  src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"
+></script>
 <script>
-$(document).ready( function () {
-    $('.tableclass').DataTable();
-} );
+  $(document).ready(function () {
+    $(".tableclass").DataTable();
+  });
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"
+/>
+<script>
+  function clicked(email_address) {
+    console.log("{{group_name}}");
+    console.log(email_address);
+
+    event.preventDefault(); // prevent form submit
+    var form = event.target.form; // storing the form
+    swal(
+      {
+        title: "Are you sure?",
+        text: `are you sure you want to delete ${email_address} from {{group_name}}`,
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, Delete it!",
+        cancelButtonText: "No, Abort deletion please!",
+        closeOnConfirm: false,
+        closeOnCancel: false,
+      },
+      function (isConfirm) {
+        if (isConfirm) {
+          console.log("{{i.0}}");
+          console.log("{{group_name}}");
+          swal("Deleted!", "Group has been deleted.", "success");
+          window.location = `/administrative/deletegroupmember/${email_address}/{{group_name}}`; // submitting the form when user press yes
+        } else {
+          swal("Cancelled", "The task was aborted by you", "error");
+        }
+      }
+    );
+  }
+</script>
+
 {% endblock %}

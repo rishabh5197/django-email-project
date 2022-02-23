@@ -173,14 +173,18 @@ def selection(request):
         print('coming to else')
         if request.session.get('time'):
             del request.session['time']
-            if request.session['name']:
-                del request.session['name']
-            if request.session['verified']:
-                del request.session['verified']
-            if request.session['email_address']:
-                del request.session['email_address']
-            request.session['msg'] = 'Logged out due to inactive state'
-            print('deleted session',request.session.get('time'))
+            try:
+                if request.session['name']:
+                    del request.session['name']
+                if request.session['verified']:
+                    del request.session['verified']
+                if request.session['email_address']:
+                    del request.session['email_address']
+                request.session['msg'] = 'Logged out due to inactive state'
+                print('deleted session',request.session.get('time'))
+            except :
+                pass
+
         else:
             print('coming to nested else')
             pass
@@ -191,11 +195,14 @@ def selection(request):
 # Database of all emails.
 # here is the list of all emails.
 def storedmails(request):
-    new_time = datetime.strftime(datetime.now(), '%d/%m/%Y %H:%M:%S')
-    print(request.session.get('time'))
-    difference = (datetime.strptime(new_time, '%d/%m/%Y %H:%M:%S') -
-                  datetime.strptime(request.session.get('time'), '%d/%m/%Y %H:%M:%S')).seconds
-    print(str(difference) + ' seconds')
+    try:
+        new_time = datetime.strftime(datetime.now(), '%d/%m/%Y %H:%M:%S')
+        print(request.session.get('time'))
+        difference = (datetime.strptime(new_time, '%d/%m/%Y %H:%M:%S') -
+                    datetime.strptime(request.session.get('time'), '%d/%m/%Y %H:%M:%S')).seconds
+        print(str(difference) + ' seconds')
+    except :
+        pass
     if request.session.get('name') and request.session.get('verified') == 'yes' and request.session.get('approval') == 'yes' and difference > minimum_seconds and difference < maximum_seconds:
         request.session['time'] = datetime.strftime(
             datetime.now(), '%d/%m/%Y %H:%M:%S')
@@ -203,10 +210,16 @@ def storedmails(request):
         return render(request, 'mails/databasemails.html', {'mails': all_emails, 'count': 0})
     else:
         if request.session.get('time'):
-            del request.session['time']
-            del request.session['name']
-            del request.session['verified']
-            del request.session['email_address']
+            try:
+                del request.session['time']
+                if request.session['name']:
+                    del request.session['name']
+                if request.session['verified']:
+                    del request.session['verified']
+                if request.session['email_address']:
+                    del request.session['email_address']
+            except:
+                pass
             request.session['msg'] = 'Logged out due to inactive state'
         else:
             pass
@@ -395,10 +408,16 @@ def sendemail(request, title=''):
                       {'form': form, 'json_data': json_data, 'groups': group})
     else:
         if request.session.get('time'):
-            del request.session['name']
-            del request.session['time']
-            del request.session['verified']
-            del request.session['email_address']
+            try:
+                del request.session['time']
+                if request.session['name']:
+                    del request.session['name']
+                if request.session['verified']:
+                    del request.session['verified']
+                if request.session['email_address']:
+                    del request.session['email_address']
+            except:
+                pass
             request.session['msg'] = 'Logged out due to inactive state'
         else:
             pass
@@ -441,10 +460,16 @@ def viewemailids(request):
         return render(request, 'mails/viewemailids.html', {'emails': all_members})
     else:
         if request.session.get('time'):
-            del request.session['time']
-            del request.session['name']
-            del request.session['verified']
-            del request.session['email_address']
+            try:
+                del request.session['time']
+                if request.session['name']:
+                    del request.session['name']
+                if request.session['verified']:
+                    del request.session['verified']
+                if request.session['email_address']:
+                    del request.session['email_address']
+            except:
+                pass
             request.session['msg'] = 'Logged out due to inactive state'
         else:
             pass
@@ -645,10 +670,16 @@ def schedulemail(request, title=''):
         return render(request, 'mails/schedulemail.html', {'form': form, 'groups': group})
     else:
         if request.session.get('time'):
-            del request.session['time']
-            del request.session['name']
-            del request.session['verified']
-            del request.session['email_address']
+            try:
+                del request.session['time']
+                if request.session['name']:
+                    del request.session['name']
+                if request.session['verified']:
+                    del request.session['verified']
+                if request.session['email_address']:
+                    del request.session['email_address']
+            except:
+                pass
             request.session['msg'] = 'Logged out due to inactive state'
         else:
             pass
@@ -672,10 +703,16 @@ def viewgroups(request):
         })
     else:
         if request.session.get('time'):
-            del request.session['time']
-            del request.session['name']
-            del request.session['verified']
-            del request.session['email_address']
+            try:
+                del request.session['time']
+                if request.session['name']:
+                    del request.session['name']
+                if request.session['verified']:
+                    del request.session['verified']
+                if request.session['email_address']:
+                    del request.session['email_address']
+            except:
+                pass
             request.session['msg'] = 'Logged out due to inactive state'
         else:
             pass
@@ -707,10 +744,16 @@ def viewgroupdetails(request, group_name):
                                                                'data_rendering': data_rendering})
     else:
         if request.session.get('time'):
-            del request.session['name']
-            del request.session['verified']
-            del request.session['email_address']
-            del request.session['time']
+            try:
+                del request.session['time']
+                if request.session['name']:
+                    del request.session['name']
+                if request.session['verified']:
+                    del request.session['verified']
+                if request.session['email_address']:
+                    del request.session['email_address']
+            except:
+                pass
             request.session['msg'] = 'Logged out due to inactive state'
         else:
             pass
@@ -735,10 +778,16 @@ def sentmailslist(request):
         return render(request, 'mails/mailsview.html', {'employee_id': request.session.get('email_address'), 'mails': mails})
     else:
         if request.session.get('time'):
-            del request.session['time']
-            del request.session['name']
-            del request.session['verified']
-            del request.session['email_address']
+            try:
+                del request.session['time']
+                if request.session['name']:
+                    del request.session['name']
+                if request.session['verified']:
+                    del request.session['verified']
+                if request.session['email_address']:
+                    del request.session['email_address']
+            except:
+                pass
             request.session['msg'] = 'Logged out due to inactive state'
         else:
             pass

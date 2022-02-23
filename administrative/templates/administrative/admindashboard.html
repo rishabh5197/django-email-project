@@ -49,9 +49,12 @@ Dashboard {% endblock %} {% block css%}
             <a href="edit/{{j.employee_id}}"
               ><i class="bi bi-pencil-square" style="color: goldenrod"></i
             ></a>
-            <a href="delete/{{j.employee_id}}"
-              ><i class="bi bi-trash-fill" style="color: red"></i
-            ></a>
+            <i
+              id="{{j.employee_id}}"
+              class="bi bi-trash-fill"
+              style="color: red"
+              onclick="clicked(this.id)"
+            ></i>
             <a href="view/{{j.employee_id}}"
               ><i class="bi bi-eye" style="color: green"></i
             ></a>
@@ -161,12 +164,51 @@ Dashboard {% endblock %} {% block css%}
 <script>
   $(document).ready(function () {
     $(".table-sm").DataTable({
-      'aLengthMenu': [
+      aLengthMenu: [
         [3, 5, 10, 25, -1],
         [3, 5, 10, 25, "ALL"],
       ],
-      'iDisplayLength': 3,
+      iDisplayLength: 3,
     });
   });
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"
+/>
+<script>
+  function clicked(employee_id) {
+    console.log(employee_id);
+
+    event.preventDefault(); // prevent form submit
+    var form = event.target.form; // storing the form
+    swal(
+      {
+        title: "Are you sure?",
+        text: "Once deleted, the record will not be able to retrieve",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, Delete it!",
+        cancelButtonText: "No, Abort deletion please!",
+        closeOnConfirm: false,
+        closeOnCancel: false,
+      },
+      function (isConfirm) {
+        if (isConfirm) {
+          console.log("{{i.0}}");
+          console.log("{{group_name}}");
+          swal("Deleted!", "Group has been deleted.", "success");
+          window.location = `delete/${employee_id}`; // submitting the form when user press yes
+        } else {
+          swal("Cancelled", "The task was aborted by you", "error");
+        }
+      }
+    );
+  }
+</script>
+
 {% endblock %}
