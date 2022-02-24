@@ -1,0 +1,86 @@
+{% extends 'mails/basehtml.html'%}
+
+<!-- loading static -->
+{% load static %}
+
+<!-- title block -->
+{% block title %} Edit {{username}} {% endblock %}
+
+<!-- css block -->
+{% block css%}
+<link rel="stylesheet" href="{% static 'mails/css/editprofilepage.css' %}" />
+
+{% endblock %}
+
+<!-- main content block -->
+{% block content %} {% if msg %}
+<div style="color: green">{{msg}}</div>
+{% endif %} {% for i in userdetails %}
+
+<form method="post">
+  {% csrf_token %}
+  <div class="mainbody">
+    <div class="title">
+      Edit
+      <span
+        style="color: goldenrod; text-shadow: 0px 0px 2px; font-weight: bold"
+        >{{username}}</span
+      >
+    </div>
+    <div class="table-structure">
+      <div>Name :</div>
+      <div>
+        <input
+          type="text"
+          class="form-control"
+          value="{{i.name}}"
+          id="nameofperson"
+          name="nameofperson"
+        />
+      </div>
+    </div>
+    <div class="table-structure">
+      <div>Mobile Number :</div>
+      <div>
+        <input
+          type="text"
+          class="form-control"
+          value="{{i.mobile_number}}"
+          id="mobilenumberofperson"
+          name="mobilenumberofperson"
+        />
+      </div>
+    </div>
+    <div class="table-structure">
+      <div>Address :</div>
+      <div align="left">
+        <textarea
+          name="addressofperson"
+          id="addressofperson"
+          cols="30"
+          rows="5"
+          class="form-control"
+        >
+{{i.address}}</textarea
+        >
+      </div>
+    </div>
+    <div align="center">
+      <button type="submit" class="btn btn-success">
+        <i class="bi bi-cloud-arrow-up" style="font-size: 16px"></i> Update My
+        Profile
+      </button>
+    </div>
+  </div>
+</form>
+<div align="center" style="color: white">
+  <a href="/selection"
+    ><button class="btn btn-info">
+      <i class="bi bi-arrow-left-circle"></i> Go Back
+    </button></a
+  >
+</div>
+{% endfor %} {%endblock%}
+
+<!-- script block -->
+{% block script%} {% endblock%}

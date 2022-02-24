@@ -13,6 +13,11 @@
         </h1>
       </td>
       <td align="right">
+        <a href="/editprofile">
+          <button class="btn btn-warning" style="border: 1px solid black">
+            <i class="bi bi-pencil-fill"></i> Edit Profile
+          </button> </a
+        >&nbsp;
         <a href="/signout">
           <button class="btn btn-danger" style="border: 1px solid black">
             <i class="bi bi-door-open"></i> Logout
@@ -89,7 +94,7 @@
     </a>
   </div>
   <div align="center">
-    <a href="viewemailids" style="text-decoration: none" >
+    <a href="viewemailids" style="text-decoration: none">
       <div
         style="
           background-color: rgba(128, 128, 128, 0.363);
@@ -107,7 +112,7 @@
     </a>
   </div>
   <div align="center">
-    <a href="viewgroups" style="text-decoration: none" >
+    <a href="viewgroups" style="text-decoration: none">
       <div
         style="
           background-color: rgba(128, 128, 128, 0.363);
@@ -126,7 +131,7 @@
   </div>
 
   <div align="center">
-    <a href="sentmails" style="text-decoration: none" >
+    <a href="sentmails" style="text-decoration: none">
       <div
         style="
           background-color: rgba(128, 128, 128, 0.363);
@@ -140,6 +145,45 @@
       </div>
     </a>
   </div>
+  {% for i in db %} {% if i.group_creation == True %}
+  <div align="center">
+    <a href="creategroup" style="text-decoration: none">
+      <div
+        style="
+          background-color: rgba(128, 128, 128, 0.363);
+          border-radius: 50px;
+        "
+      >
+        <img
+          src="{% static 'administrative/images/create group.svg'%}"
+          class="images"
+          style="width: 90%"
+        />
+      </div>
+      <div>
+        <p class="paragraph">Create Group</p>
+      </div>
+    </a>
+  </div>
+  {% endif %} {% endfor %} {% for i in db %} {% if i.group_edition == True %}
+  <div align="center">
+    <a href="viewgroupstomodify" style="text-decoration: none">
+      <div
+        style="
+          background-color: rgba(128, 128, 128, 0.363);
+          border-radius: 50px;
+        "
+      >
+        <img
+          src="{% static 'administrative/images/manage groups.svg'%}"
+          class="images"
+        />
+      </div>
+      <div>
+        <p class="paragraph">Manage and View groups</p>
+      </div>
+    </a>
+  </div>
+  {% endif %} {% endfor %}
 </div>
-
 {% endblock %}

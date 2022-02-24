@@ -1,0 +1,135 @@
+{% extends "mails/basehtml.html" %}
+<!-- loading static -->
+{% load static %}
+<!--title block  -->
+{% block title %} create group {% endblock %}
+
+<!-- Css -->
+{% block css%}
+<link
+  rel="stylesheet"
+  href="{% static 'administrative/css/creategroup.css' %}"
+/>
+{% endblock %}
+<!--  Main content-->
+
+
+{% block content %}
+{% for i in db %}
+{% if i.group_creation == True %}
+<form method="POST">
+  {% csrf_token %}
+  <div class="mainbody" align="center">
+    <div align="center">
+      <div>
+        <p style="font-size: 1rem; font-weight: bold">Create group</p>
+      </div>
+      <div>
+        <p style="color: red; font-size: 12px; font-weight: bold">
+          Enter group name without space
+        </p>
+      </div>
+      <table class="table">
+        {% if errmsg %}
+        <tr align="center">
+          <td colspan="3" style="color: red">{{errmsg}}</td>
+        </tr>
+        {% endif %} {% if msg %}
+        <tr align="center">
+          <td colspan="3" style="color: green">{{msg}}</td>
+        </tr>
+        {% endif %}
+        <tr>
+          <td><b>Group Name</b></td>
+          <td><b>:</b></td>
+          <td><input type="text" name="groupname" id="groupname" /></td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <p style="font-size: 12px; color: red">
+              Please select the email id you wish to have in the group from the
+              list
+            </p>
+          </td>
+        </tr>
+      </table>
+      <div align="center">
+        <button type="submit" class="btn btn-success">
+          <i class="bi bi-people" style="font-size: 16px"></i> Create Group
+        </button>
+      </div>
+    </div>
+    <div>
+      <div><b>Add member</b></div>
+      <div>
+        <table class="addmembers">
+          <thead>
+            <tr>
+              <td>Email Addresses</td>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in all_members %}
+            <tr>
+              <td>
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="check"
+                  name="check"
+                  value="{{i.email_address}}"
+                />
+                <label><b>{{i.name}} : </b></label>
+                <label class="form-check-label" for="flexSwitchCheckDefault"
+                  >{{i.email_address}}</label
+                >
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</form>
+<div align="center">
+  <a href="/selection">
+    <button class="btn btn-info">
+      <i class="bi bi-arrow-left-circle"></i> go back
+    </button>
+  </a>
+</div>
+{% else %}
+<div>
+ <p>Sorry you are not allowed for this page</p>
+</div>
+{% endif %}
+{% endfor %}
+
+
+{% endblock %} {% block script %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css"
+/>
+<script
+  type="text/javascript"
+  charset="utf8"
+  src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"
+></script>
+<script>
+  $(document).ready(function () {
+    $(".addmembers").DataTable({
+      aLengthMenu: [
+        [3, 5, 10, 25, -1],
+        [3, 5, 10, 25, "ALL"],
+      ],
+      iDisplayLength: 3,
+    });
+  });
+</script>
+{% endblock %}

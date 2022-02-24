@@ -52,6 +52,391 @@ maximum_seconds = 30*60
 
 # Login function if for the user to
 # login into his own account and proceed for OTP.
+
+
+def editprofile(request):
+    if request.session.get('time'):
+        request.session.get('time')
+        print('time already present')
+        print(request.session.get('time'), 'current time....')
+    else:
+        request.session['time'] = datetime.strftime(
+            datetime.now(), '%d/%m/%Y %H:%M:%S')
+    new_time = datetime.strftime(datetime.now(), '%d/%m/%Y %H:%M:%S')
+    print(new_time)
+    print(request.session.get('time'))
+    difference = (datetime.strptime(new_time, '%d/%m/%Y %H:%M:%S') -
+                  datetime.strptime(request.session.get('time'), '%d/%m/%Y %H:%M:%S')).seconds
+    print(str(difference) + ' seconds')
+    if request.session.get('name') and request.session.get('verified') == 'yes' and request.session.get('approval') == 'yes' and difference > minimum_seconds and difference < maximum_seconds:
+        print(request.session.get('email_address'))
+        fetching_old_details = users.objects.filter(
+            email_id=request.session.get('email_address'))
+        print(fetching_old_details)
+        if request.method == 'POST':
+            print(request.method)
+            name = request.POST.get('nameofperson')
+            mobile_number = request.POST.get('mobilenumberofperson')
+            address = request.POST.get('addressofperson')
+            users.objects.filter(email_id=request.session.get(
+                'email_address')).update(name=name,
+                                         mobile_number=mobile_number,
+                                         address=address)
+            return render(request, "mails/editprofilepage.html", {'userdetails': fetching_old_details, 'username': request.session.get('name'), 'msg': 'Your profile has been updated successully...'})
+        return render(request, 'mails/editprofilepage.html', {'userdetails': fetching_old_details, 'username': request.session.get('name')})
+    else:
+        print('coming to else')
+        if request.session.get('time'):
+            del request.session['time']
+            try:
+                if request.session['name']:
+                    del request.session['name']
+                if request.session['verified']:
+                    del request.session['verified']
+                if request.session['email_address']:
+                    del request.session['email_address']
+                request.session['msg'] = 'Logged out due to inactive state'
+                print('deleted session', request.session.get('time'))
+            except:
+                pass
+
+        else:
+            print('coming to nested else')
+            pass
+
+        return redirect('/')
+
+
+def creategroup(request):
+    if request.session.get('time'):
+        request.session.get('time')
+        print('time already present')
+        print(request.session.get('time'), 'current time....')
+    else:
+        request.session['time'] = datetime.strftime(
+            datetime.now(), '%d/%m/%Y %H:%M:%S')
+    new_time = datetime.strftime(datetime.now(), '%d/%m/%Y %H:%M:%S')
+    print(new_time)
+    print(request.session.get('time'))
+    difference = (datetime.strptime(new_time, '%d/%m/%Y %H:%M:%S') -
+                  datetime.strptime(request.session.get('time'), '%d/%m/%Y %H:%M:%S')).seconds
+    print(str(difference) + ' seconds')
+    if request.session.get('name') and request.session.get('verified') == 'yes' and request.session.get('approval') == 'yes' and difference > minimum_seconds and difference < maximum_seconds:
+        print(request.session.get('email_address'))
+        db = users.objects.filter(
+            email_id=request.session.get('email_address'))
+        print(db)
+        all_members = mail_members.objects.all()
+        if request.method == 'POST':
+            group_name = request.POST.get('groupname')
+            checking_group_name = groups.objects.filter(group_name=group_name)
+            if checking_group_name:
+                return render(request, 'mails/creategroup.html', {'db': db, 'all_members': all_members, 'errmsg': f'{group_name} already exists'})
+            else:
+                checked = request.POST.getlist('check')
+                print(group_name, checked)
+                aa = groups.objects.create(group_name=group_name)
+                aa.save()
+                for i in checked:
+                    bb = group_members.objects.create(email_address=i,
+                                                      group_name=group_name)
+                    bb.save()
+                print('all inserted...')
+            return render(request, 'mails/creategroup.html', {'db': db, 'all_members': all_members, 'msg': 'Group Created Successfully...'})
+
+        else:
+            return render(request, 'mails/creategroup.html', {'db': db,
+                                                              'all_members': all_members
+                                                              })
+    else:
+        print('coming to else')
+        if request.session.get('time'):
+            del request.session['time']
+            try:
+                if request.session['name']:
+                    del request.session['name']
+                if request.session['verified']:
+                    del request.session['verified']
+                if request.session['email_address']:
+                    del request.session['email_address']
+                request.session['msg'] = 'Logged out due to inactive state'
+                print('deleted session', request.session.get('time'))
+            except:
+                pass
+
+        else:
+            print('coming to nested else')
+            pass
+
+        return redirect('/')
+
+
+def addgroupmember(request, group_name):
+    if request.session.get('time'):
+        request.session.get('time')
+        print('time already present')
+        print(request.session.get('time'), 'current time....')
+    else:
+        request.session['time'] = datetime.strftime(
+            datetime.now(), '%d/%m/%Y %H:%M:%S')
+    new_time = datetime.strftime(datetime.now(), '%d/%m/%Y %H:%M:%S')
+    print(new_time)
+    print(request.session.get('time'))
+    difference = (datetime.strptime(new_time, '%d/%m/%Y %H:%M:%S') -
+                  datetime.strptime(request.session.get('time'), '%d/%m/%Y %H:%M:%S')).seconds
+    print(str(difference) + ' seconds')
+    if request.session.get('name') and request.session.get('verified') == 'yes' and request.session.get('approval') == 'yes' and difference > minimum_seconds and difference < maximum_seconds:
+        db = users.objects.filter(
+            email_id=request.session.get('email_address'))
+        all_members = [x['email_address'] for x in list(
+            mail_members.objects.all().values('email_address'))]
+        present_users = [x['email_address'] for x in list(group_members.objects.filter(
+            group_name=group_name).values('email_address'))]
+        users_to_be_added = []
+        for i in all_members:
+            if i in present_users:
+                pass
+            else:
+                users_to_be_added.append(i)
+        if request.method == 'POST':
+            checked = request.POST.getlist('check')
+            print(group_name, checked)
+            for i in checked:
+                bb = group_members.objects.create(email_address=i,
+                                                  group_name=group_name)
+                bb.save()
+            return redirect(f'/editgroupdetails/{group_name}')
+
+        else:
+            return render(request, 'mails/addtoexistinggroup.html', {'db': db, 'group_name': group_name,
+                                                                     'users_to_be_added': users_to_be_added})
+    else:
+        print('coming to else')
+        if request.session.get('time'):
+            del request.session['time']
+            try:
+                if request.session['name']:
+                    del request.session['name']
+                if request.session['verified']:
+                    del request.session['verified']
+                if request.session['email_address']:
+                    del request.session['email_address']
+                request.session['msg'] = 'Logged out due to inactive state'
+                print('deleted session', request.session.get('time'))
+            except:
+                pass
+
+        else:
+            print('coming to nested else')
+            pass
+
+        return redirect('/')
+
+
+def deletegroupmembers(request, email_address, group_name):
+    if request.session.get('time'):
+        request.session.get('time')
+        print('time already present')
+        print(request.session.get('time'), 'current time....')
+    else:
+        request.session['time'] = datetime.strftime(
+            datetime.now(), '%d/%m/%Y %H:%M:%S')
+    new_time = datetime.strftime(datetime.now(), '%d/%m/%Y %H:%M:%S')
+    print(new_time)
+    print(request.session.get('time'))
+    difference = (datetime.strptime(new_time, '%d/%m/%Y %H:%M:%S') -
+                  datetime.strptime(request.session.get('time'), '%d/%m/%Y %H:%M:%S')).seconds
+    print(str(difference) + ' seconds')
+    if request.session.get('name') and request.session.get('verified') == 'yes' and request.session.get('approval') == 'yes' and difference > minimum_seconds and difference < maximum_seconds:
+        db = users.objects.filter(
+            email_id=request.session.get('email_address'))
+        group_members.objects.filter(
+            email_address=email_address, group_name=group_name).delete()
+        data_rendering = []
+        all_group_members = group_members.objects.filter(
+            group_name=group_name).values('email_address')
+        for i in all_group_members:
+            data_mail_members = mail_members.objects.filter(
+                email_address=i['email_address']).values_list('name', 'phone_number', 'industry_name')
+            print(data_mail_members)
+            data_rendering.append(
+                [i['email_address'], data_mail_members[0][0], data_mail_members[0][1], data_mail_members[0][2]])
+        return render(request, 'mails/editgroupdetails.html', {'db': db, 'group_name': group_name,
+                                                               'data_rendering': data_rendering})
+
+    else:
+        print('coming to else')
+        if request.session.get('time'):
+            del request.session['time']
+            try:
+                if request.session['name']:
+                    del request.session['name']
+                if request.session['verified']:
+                    del request.session['verified']
+                if request.session['email_address']:
+                    del request.session['email_address']
+                request.session['msg'] = 'Logged out due to inactive state'
+                print('deleted session', request.session.get('time'))
+            except:
+                pass
+
+        else:
+            print('coming to nested else')
+            pass
+
+        return redirect('/')
+
+
+def viewgroups1(request):
+    if request.session.get('time'):
+        request.session.get('time')
+        print('time already present')
+        print(request.session.get('time'), 'current time....')
+    else:
+        request.session['time'] = datetime.strftime(
+            datetime.now(), '%d/%m/%Y %H:%M:%S')
+    new_time = datetime.strftime(datetime.now(), '%d/%m/%Y %H:%M:%S')
+    print(new_time)
+    print(request.session.get('time'))
+    difference = (datetime.strptime(new_time, '%d/%m/%Y %H:%M:%S') -
+                  datetime.strptime(request.session.get('time'), '%d/%m/%Y %H:%M:%S')).seconds
+    print(str(difference) + ' seconds')
+
+    if request.session.get('name') and request.session.get('verified') == 'yes' and request.session.get('approval') == 'yes' and difference > minimum_seconds and difference < maximum_seconds:
+        db = users.objects.filter(
+            email_id=request.session.get('email_address'))
+        all_groups = groups.objects.all()
+        print(all_groups)
+        return render(request, 'mails/viewgroups2.html', {'db': db,
+                                                          'all_groups': all_groups
+                                                          })
+    else:
+        print('coming to else')
+        if request.session.get('time'):
+            del request.session['time']
+            try:
+                if request.session['name']:
+                    del request.session['name']
+                if request.session['verified']:
+                    del request.session['verified']
+                if request.session['email_address']:
+                    del request.session['email_address']
+                request.session['msg'] = 'Logged out due to inactive state'
+                print('deleted session', request.session.get('time'))
+            except:
+                pass
+
+        else:
+            print('coming to nested else')
+            pass
+
+        return redirect('/')
+
+
+def viewgroupdetails1(request, group_name):
+    if request.session.get('time'):
+        request.session.get('time')
+        print('time already present')
+        print(request.session.get('time'), 'current time....')
+    else:
+        request.session['time'] = datetime.strftime(
+            datetime.now(), '%d/%m/%Y %H:%M:%S')
+    new_time = datetime.strftime(datetime.now(), '%d/%m/%Y %H:%M:%S')
+    print(new_time)
+    print(request.session.get('time'))
+    difference = (datetime.strptime(new_time, '%d/%m/%Y %H:%M:%S') -
+                  datetime.strptime(request.session.get('time'), '%d/%m/%Y %H:%M:%S')).seconds
+    print(str(difference) + ' seconds')
+    if request.session.get('name') and request.session.get('verified') == 'yes' and request.session.get('approval') == 'yes' and difference > minimum_seconds and difference < maximum_seconds:
+        db = users.objects.filter(
+            email_id=request.session.get('email_address'))
+        data_rendering = []
+        all_group_members = group_members.objects.filter(
+            group_name=group_name).values('email_address')
+        for i in all_group_members:
+            data_mail_members = mail_members.objects.filter(
+                email_address=i['email_address']).values_list('name', 'phone_number', 'industry_name')
+            print(data_mail_members)
+            data_rendering.append(
+                [i['email_address'], data_mail_members[0][0], data_mail_members[0][1], data_mail_members[0][2]])
+            print('----------------------------------')
+        # print(data_rendering)
+        return render(request, 'mails/viewgroupdetails2.html', {'db': db, 'group_name': group_name,
+                                                                'data_rendering': data_rendering})
+    else:
+        print('coming to else')
+        if request.session.get('time'):
+            del request.session['time']
+            try:
+                if request.session['name']:
+                    del request.session['name']
+                if request.session['verified']:
+                    del request.session['verified']
+                if request.session['email_address']:
+                    del request.session['email_address']
+                request.session['msg'] = 'Logged out due to inactive state'
+                print('deleted session', request.session.get('time'))
+            except:
+                pass
+
+        else:
+            print('coming to nested else')
+            pass
+
+        return redirect('/')
+
+
+def editgroupdetails(request, group_name):
+    if request.session.get('time'):
+        request.session.get('time')
+        print('time already present')
+        print(request.session.get('time'), 'current time....')
+    else:
+        request.session['time'] = datetime.strftime(
+            datetime.now(), '%d/%m/%Y %H:%M:%S')
+    new_time = datetime.strftime(datetime.now(), '%d/%m/%Y %H:%M:%S')
+    print(new_time)
+    print(request.session.get('time'))
+    difference = (datetime.strptime(new_time, '%d/%m/%Y %H:%M:%S') -
+                  datetime.strptime(request.session.get('time'), '%d/%m/%Y %H:%M:%S')).seconds
+    print(str(difference) + ' seconds')
+    if request.session.get('name') and request.session.get('verified') == 'yes' and request.session.get('approval') == 'yes' and difference > minimum_seconds and difference < maximum_seconds:
+        db = users.objects.filter(
+            email_id=request.session.get('email_address'))
+        data_rendering = []
+        all_group_members = group_members.objects.filter(
+            group_name=group_name).values('email_address')
+        for i in all_group_members:
+            data_mail_members = mail_members.objects.filter(
+                email_address=i['email_address']).values_list('name', 'phone_number', 'industry_name')
+            print(data_mail_members)
+            data_rendering.append(
+                [i['email_address'], data_mail_members[0][0], data_mail_members[0][1], data_mail_members[0][2]])
+        return render(request, 'mails/editgroupdetails.html', {'db': db, 'group_name': group_name,
+                                                               'data_rendering': data_rendering})
+    else:
+        print('coming to else')
+        if request.session.get('time'):
+            del request.session['time']
+            try:
+                if request.session['name']:
+                    del request.session['name']
+                if request.session['verified']:
+                    del request.session['verified']
+                if request.session['email_address']:
+                    del request.session['email_address']
+                request.session['msg'] = 'Logged out due to inactive state'
+                print('deleted session', request.session.get('time'))
+            except:
+                pass
+
+        else:
+            print('coming to nested else')
+            pass
+
+        return redirect('/')
+
+
 def login(request):
     try:
         msg = request.session.get('msg')
@@ -165,10 +550,14 @@ def selection(request):
     difference = (datetime.strptime(new_time, '%d/%m/%Y %H:%M:%S') -
                   datetime.strptime(request.session.get('time'), '%d/%m/%Y %H:%M:%S')).seconds
     print(str(difference) + ' seconds')
+
     if request.session.get('name') and request.session.get('verified') == 'yes' and request.session.get('approval') == 'yes' and difference > minimum_seconds and difference < maximum_seconds:
+        print(request.session.get('email_address'))
+        db = users.objects.filter(
+            email_id=request.session.get('email_address'))
         request.session['time'] = datetime.strftime(
             datetime.now(), '%d/%m/%Y %H:%M:%S')
-        return render(request, 'mails/homepage.html', {'user': request.session.get('name')})
+        return render(request, 'mails/homepage.html', {'user': request.session.get('name'), 'db': db})
     else:
         print('coming to else')
         if request.session.get('time'):
@@ -181,14 +570,14 @@ def selection(request):
                 if request.session['email_address']:
                     del request.session['email_address']
                 request.session['msg'] = 'Logged out due to inactive state'
-                print('deleted session',request.session.get('time'))
-            except :
+                print('deleted session', request.session.get('time'))
+            except:
                 pass
 
         else:
             print('coming to nested else')
             pass
-        
+
         return redirect('/')
 
 
@@ -199,9 +588,9 @@ def storedmails(request):
         new_time = datetime.strftime(datetime.now(), '%d/%m/%Y %H:%M:%S')
         print(request.session.get('time'))
         difference = (datetime.strptime(new_time, '%d/%m/%Y %H:%M:%S') -
-                    datetime.strptime(request.session.get('time'), '%d/%m/%Y %H:%M:%S')).seconds
+                      datetime.strptime(request.session.get('time'), '%d/%m/%Y %H:%M:%S')).seconds
         print(str(difference) + ' seconds')
-    except :
+    except:
         pass
     if request.session.get('name') and request.session.get('verified') == 'yes' and request.session.get('approval') == 'yes' and difference > minimum_seconds and difference < maximum_seconds:
         request.session['time'] = datetime.strftime(

@@ -62,6 +62,8 @@ class users(models.Model):
         default=0, help_text='Nos of attempts made by failure')
     approval = models.BooleanField(null=True)
     otp = models.CharField(max_length=10, null=True)
+    group_creation = models.BooleanField(default=False, null=True)
+    group_edition = models.BooleanField(default=False, null=True)
 
     def __str__(self):
         return f"{self.email_id}"

@@ -1,0 +1,17 @@
+.mainbody {
+  /* border: 1px solid black; */
+  margin: 2%;
+}
+
+.title {
+  font-size: xx-large;
+  text-align: center;
+}
+
+.table-structure {
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(2, 30% 70%);
+  margin:2%;
+}
+

@@ -31,10 +31,36 @@ from django.core.validators import validate_email
 import time
 
 
+def permissions(request, email_address):
+    if request.user.is_authenticated:
+        db = users.objects.filter(email_id=email_address)
+        if request.method == 'POST':
+            checked = request.POST.getlist('check')
+            print(checked)
+            if 'create_group' in checked:
+                users.objects.filter(
+                    email_id=email_address).update(group_creation=True)
+            else:
+                users.objects.filter(
+                    email_id=email_address).update(group_creation=False)
+
+            if 'modify_group' in checked:
+                users.objects.filter(
+                    email_id=email_address).update(group_edition=True)
+            else:
+                users.objects.filter(
+                    email_id=email_address).update(group_edition=False)
+            return redirect('/administrative/dashboard')
+        return render(request, "administrative/permissions.html", {'email_address': email_address,
+                                                                   'db': db})
+    else:
+        return redirect('/administrative/')
+
+
 def approveuser(request):
     if request.user.is_authenticated:
         full_list = users.objects.filter(approval=False)
-        return render(request, 'administrative/approveuser.html',{'users':full_list})
+        return render(request, 'administrative/approveuser.html', {'users': full_list})
     else:
         return redirect('/administrative/')
 
@@ -218,9 +244,10 @@ def changepassword(request, employee_id):
 def edit(request, employee_id):
     if request.user.is_authenticated:
         user_data = users.objects.filter(employee_id=employee_id)
-        email_add_to_use =  user_data.values_list()[0][3]
+        email_add_to_use = user_data.values_list()[0][3]
         # print(email_id)
-        print('**************************************************************',email_add_to_use)
+        print('**************************************************************',
+              email_add_to_use)
         print(user_data.values_list())
         # print(dict(user_data))
         form = adduser(initial={'name': user_data.values_list()[0][1],
@@ -228,7 +255,7 @@ def edit(request, employee_id):
                                 'status': user_data.values_list()[0][12],
                                 'mobile_number': user_data.values_list()[0][5],
                                 'attempts': user_data.values_list()[0][13],
-                                'approval':user_data.values_list()[0][14]})
+                                'approval': user_data.values_list()[0][14]})
         if request.method == 'POST':
             email_add_to_use = user_data.values_list()[0][3]
             name = request.POST['name']
@@ -256,10 +283,10 @@ def edit(request, employee_id):
                 # attempts=attempts
             )
             return render(request, 'administrative/editpage.html', {'employee_id': employee_id,
-                'user_data': user_data,
-                'form': form,
-                'msg': 'Form is updated successfully.',
-                'email_add_to_use': email_add_to_use})
+                                                                    'user_data': user_data,
+                                                                    'form': form,
+                                                                    'msg': 'Form is updated successfully.',
+                                                                    'email_add_to_use': email_add_to_use})
 
         else:
             return render(request, 'administrative/editpage.html', {
@@ -427,10 +454,8 @@ def addmember(request):
         return redirect('/administrative/')
 
 
-def activateuser(request,email_address):
+def activateuser(request, email_address):
     print(email_address)
     users.objects.filter(email_id=email_address).update(approval=True)
     print('approved...')
     return redirect('approveuser')
-
-

@@ -1,0 +1,90 @@
+{% extends "administrative/base.html" %}
+<!-- extending html and loading static data -->
+{% load static %}
+<!--  Declaring title-->
+
+{% block title%} View group details {% endblock %}
+
+<!-- Declaring css-->
+
+{% block css %}
+<link
+  rel="stylesheet"
+  href="{% static 'administrative\css\viewgroupdetails.css' %}"
+/>
+{% endblock %}
+
+<!-- Main body part content -->
+
+{% block content %} {% for i in db %} {% if i.group_edition == True %}
+
+<div class="mainbody">
+  <div align="center" style="font-size: 2rem">
+    Members present in group :- <b> {{group_name}}</b>
+  </div>
+  <div>
+    <table class="tableclass" align="center">
+      <thead>
+        <tr
+          align="center"
+          style="
+            background-color: black;
+            color: white;
+            padding: 0%;
+            font-size: 1rem;
+          "
+        >
+          <th>Sr No.</th>
+          <th>Email-Address</th>
+          <th>Name</th>
+          <th>Phone Number</th>
+          <th>Client Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in data_rendering %}
+        <tr>
+          <td>{{forloop.counter}}</td>
+          <td>{{i.0}}</td>
+          <td>{{i.1}}</td>
+          <td>{{i.2}}</td>
+          <td>{{i.3}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<div align="center">
+  <a href="/viewgroupstomodify">
+    <button class="btn btn-info">
+      <i class="bi bi-arrow-left-circle"></i> go back
+    </button>
+  </a>
+</div>
+{% else %}
+<div>
+  Sorry you are not allowed on this page
+  <div>
+    {% endif %} {% endfor %} {% endblock %} {% block script %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css"
+    />
+    <script
+      type="text/javascript"
+      charset="utf8"
+      src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"
+    ></script>
+    <script>
+      $(document).ready(function () {
+        $(".tableclass").DataTable();
+      });
+    </script>
+    {% endblock %}
+  </div>
+</div>

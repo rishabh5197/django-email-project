@@ -1,0 +1,99 @@
+{% extends "administrative/base.html" %}
+<!--  -->
+{% load static %}
+<!--  -->
+{% block title %} Add member {% endblock %}
+<!--  -->
+{% block css %}
+<link rel="stylesheet" href="{% static 'administrative/css/addmember.css' %}" />
+{% endblock %}
+
+<!--  -->
+{% block content %}
+<div class="mainbody" align="center">
+  <div>
+    <form method="POST">
+      {% csrf_token %}
+      <table class="table table-striped">
+        <tr align="center">
+          <th colspan="3"><h1>Add Member for sending email</h1></th>
+        </tr>
+        {% if msg %}
+        <tr align="center">
+          <td colspan="3">
+            <div class="alert alert-success" role="alert">
+              <i class="bi bi-envelope-check-fill" style="font-size: 16px"></i>
+              {{msg}}
+            </div>
+          </td>
+        </tr>
+        {% endif %}
+        <tr>
+          <td><b>Full Name</b></td>
+          <td><b>:</b></td>
+          <td>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              required
+              placeholder="Full Name"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td><b>Email</b></td>
+          <td><b>:</b></td>
+          <td>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              required
+              placeholder="Email Address"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td><b>Phone Number</b></td>
+          <td><b>:</b></td>
+          <td>
+            <input
+              type="text"
+              name="phone_number"
+              id="phone_number"
+              placeholder="Phone Number"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td><b>Industry Name</b></td>
+          <td><b>:</b></td>
+          <td>
+            <input
+              type="text"
+              name="industry_name"
+              id="industry_name"
+              placeholder="Name of Industry"
+            />
+          </td>
+        </tr>
+        <tr align="center">
+          <td colspan="3">
+            <button type="submit" class="btn btn-success">
+              <i class="bi bi-person-plus-fill"></i> Add Member
+            </button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+<div align="center">
+  <a href="/administrative/dashboard">
+    <button class="btn btn-info">
+      <i class="bi bi-arrow-left-circle" style="font-size: 16px"></i> Go back
+    </button>
+  </a>
+</div>
+{% endblock%} 

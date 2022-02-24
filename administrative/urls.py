@@ -35,5 +35,7 @@ urlpatterns = [
     path('activate/<str:email_address>', views.activateuser, name='activate'),
     path('unblockuser/<str:email_add_to_use>',
          views.unblockuser, name='unblockuser'),
+    path('permissions/<str:email_address>',
+         views.permissions, name='permissions')
     # path("selection", views.selection, name="selection")
 ]
