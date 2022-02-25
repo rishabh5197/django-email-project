@@ -499,11 +499,6 @@ def validatewithotp(request):
             otp_database = users.objects.filter(
                 email_id=request.session.get('email_address')).values('otp')
             otp_created = otp_database[0]['otp']
-            send_mail('Login OTP verification ',
-                      f'The otp to verify the account is {otp_created}',
-                      settings.EMAIL_HOST_USER,
-                      [request.session.get('email_address')],
-                      fail_silently=False,)
             if request.method == 'POST':
                 email_address = request.POST.get('otp_entered')
                 if otp_database[0]['otp'] == email_address:
@@ -514,6 +509,12 @@ def validatewithotp(request):
                 else:
                     request.session['msg'] = 'Invalid OTP or entered wrong OTP.'
                     return redirect('/')
+            else:
+                send_mail('Login OTP verification ',
+                          f'The otp to verify the account is {otp_created}',
+                          settings.EMAIL_HOST_USER,
+                          [request.session.get('email_address')],
+                          fail_silently=False,)
             return render(request, 'mails/validatewithotp.html', {})
         else:
             request.session['msg'] = 'Requested admin to approve your email Address'

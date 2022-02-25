@@ -19,30 +19,51 @@
   <div class="loginview">
     <form method="POST">
       {% csrf_token %}
-      <div style="font-size: 3rem">Login</div>
+      <div
+        style="
+          font-size: 2rem;
+          color: black;
+          text-shadow: 0px 0px 2px black;
+          margin-bottom: 10px;
+          border-top-left-radius:25px;
+          border-top-right-radius:25px;
+        "
+      >
+        Login
+      </div>
       {% if errmsg %}
-      <p style="color: white">{{errmsg}}</p>
+      <p style="color: red">{{errmsg}}</p>
       {% endif %}
-      <div class="info">Email Address</div>
-      <div>
-        <i class="bi bi-envelope-fill"></i>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">
+            Email &nbsp;<i class="bi bi-envelope-fill"></i>
+          </span>
+        </div>
         <input
           type="email"
           name="email"
           id="email"
           placeholder="abc@gmail.com"
           autocomplete="off"
+          class="form-control"
         />
       </div>
-      <div class="info">Password</div>
-      <div>
-        <i class="bi bi-lock-fill"></i>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">
+            Pass &nbsp;&nbsp;&nbsp;<i class="bi bi-lock-fill"></i>
+          </span>
+        </div>
         <input
           type="password"
           name="password"
           id="password"
           placeholder="Password"
           autocomplete="off"
+          class="form-control"
         />
       </div>
       <div style="margin: 10px">
@@ -51,23 +72,22 @@
         </button>
       </div>
     </form>
+    <p style="color: black">Don't have an account ?</p>
     <div border="1px solid black;">
       <a href="/registeruser">
         <button class="btn btn-light">
-          <i class="bi bi-person-plus-fill"></i> Register new user
+          <i class="bi bi-person-plus-fill"></i> Register
         </button>
       </a>
     </div>
-    {% comment %}
-    <div style="margin-top: 15px">
+
+    <!-- <div style="margin-top: 15px">
       <a href="/forgetpage">
         <button class="btn btn-primary">
-          <i class="bi bi-emoji-neutral-fill" style="color: yellow"></i> forgot
-          password
+           forgot password
         </button>
       </a>
-    </div>
-    {% endcomment %}
+    </div> -->
   </div>
 </div>
 

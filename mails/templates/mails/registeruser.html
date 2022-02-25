@@ -36,38 +36,21 @@ loading static {% endcomment %}
     </div>
 
     <div class="row">
-      <div class="col-sm" align="left" style="font-weight: bold">Name</div>
+      <div class="col-3" align="left" style="font-weight: bold">Name</div>
       <div class="col-sm" align="left">
-        <input type="text" id="name" name="name" placeholder="Name" required />
-      </div>
-      <div class="col-sm" align="left" style="font-weight: bold">
-        Employee Id
-      </div>
-      <div class="col-sm" align="left" align="left">
         <input
           type="text"
-          id="employee_id"
-          name="employee_id"
-          placeholder="Employee ID"
+          id="name"
+          class="form-control"
+          name="name"
+          placeholder="Name"
           required
         />
       </div>
     </div>
 
     <div class="row">
-      <div class="col-sm" align="left" style="font-weight: bold">
-        Department
-      </div>
-      <div class="col-sm" align="left">
-        <input
-          type="text"
-          id="department"
-          name="department"
-          placeholder="Department Name"
-          required
-        />
-      </div>
-      <div class="col-sm" align="left" style="font-weight: bold">
+      <div class="col-3" align="left" style="font-weight: bold">
         Email Address
       </div>
       <div class="col-sm" align="left">
@@ -77,6 +60,7 @@ loading static {% endcomment %}
           name="email_id"
           placeholder="Email Address."
           required
+          class="form-control"
         />
       </div>
     </div>
@@ -92,18 +76,24 @@ loading static {% endcomment %}
           name="mobile"
           placeholder="Mobile Number"
           required
+          class="form-control"
         />
       </div>
       <div class="col-sm" align="left"></div>
       <div class="col-sm" align="left"></div>
     </div>
     <div class="row">
-      <div class="col-sm" align="left" style="font-weight: bold">Address</div>
+      <div class="col-3" align="left" style="font-weight: bold">Address</div>
       <div class="col-sm" align="left">
-        <textarea id="address" name="address" rows="3" cols="40"></textarea>
+        <textarea
+          id="address"
+          name="address"
+          placeholder="Address"
+          rows="7"
+          cols="40"
+          class="form-control"
+        ></textarea>
       </div>
-      <div class="col-sm"></div>
-      <div class="col-sm"></div>
     </div>
 
     <div class="row">
@@ -113,7 +103,8 @@ loading static {% endcomment %}
           type="password"
           id="password"
           name="password"
-          placeholder="****"
+          placeholder="*****"
+          class="form-control"
         />
       </div>
       <div class="col-sm" align="left" style="font-weight: bold">
@@ -124,16 +115,17 @@ loading static {% endcomment %}
           type="password"
           id="confirm_password"
           name="confirm_password"
-          placeholder="****"
+          placeholder="*****"
+          class="form-control"
         />
       </div>
     </div>
-    <div class="row" lign="left">
-      <div class="col-sm" align="left" style="font-weight: bold">
+    <div class="row" align="left">
+      <div class="col-3" align="left" style="font-weight: bold">
         Security Question 1
       </div>
       <div class="col-sm" align="left">
-        <select name="question_1" id="question_1">
+        <select name="question_1" id="question_1" class="form-select">
           <option value="In what city were you born?">
             In what city were you born?
           </option>
@@ -160,21 +152,25 @@ loading static {% endcomment %}
           </option>
         </select>
       </div>
-      <div class="col-sm" align="left" style="font-weight: bold">Answer</div>
+    </div>
+
+    <div class="row" align="left">
+      <div class="col-3" align="left" style="font-weight: bold">Answer</div>
       <div class="col-sm" align="left">
         <input
           type="text"
           name="answer_1"
           id="answer_1"
           placeholder="Answer for the question 1"
+          class="form-control"
         />
       </div>
       <div class="row">
-        <div class="col-sm" align="left" style="font-weight: bold">
+        <div class="col-3" align="left" style="font-weight: bold">
           Security Question 2
         </div>
         <div class="col-sm" lign="left">
-          <select name="question_2" id="question_2">
+          <select name="question_2" id="question_2" class="form-select">
             <option value="In what city were you born?">
               In what city were you born?
             </option>
@@ -201,13 +197,16 @@ loading static {% endcomment %}
             </option>
           </select>
         </div>
-        <div class="col-sm" align="left" style="font-weight: bold">Answer</div>
+      </div>
+      <div class="row">
+        <div class="col-3" align="left" style="font-weight: bold">Answer</div>
         <div class="col-sm" align="left">
           <input
             type="text"
             name="answer_2"
             id="answer_2"
             placeholder="Answer for the question 2"
+            class="form-control"
           />
         </div>
       </div>
@@ -217,11 +216,7 @@ loading static {% endcomment %}
         <table>
           <tr>
             <!-- <td style="font-weight: bold">Captcha code</td> -->
-            <td
-              align="center"
-            >
-              {{captcha_code}}
-            </td>
+            <td align="center">{{captcha_code}}</td>
           </tr>
           <!-- <tr>
             <td style="font-weight: bold; padding: 10px">Enter Captcha Code</td>
@@ -236,8 +231,18 @@ loading static {% endcomment %}
           </tr> -->
         </table>
       </div>
-      <button class="btn btn-success" style="margin-top: 25px"> <i class="bi bi-person-plus-fill"></i> Sign up</button>
+      <button class="btn btn-success" style="margin-top: 25px">
+        <i class="bi bi-person-plus-fill"></i> Sign up
+      </button>
     </div>
   </form>
+</div>
+
+
+<div align="center" style="margin-bottom: 100px">
+  <a href="/"
+    ><button class="btn btn-warning">
+      <i class="bi bi-arrow-left-circle-fill"></i> Go Back
+    </button></a>
 </div>
 {% endblock %}

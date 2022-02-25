@@ -31,8 +31,8 @@ urlpatterns = [
          views.editgroupdetails, name='editgroupdetails'),
     path('deletegroupmember/<str:email_address>/<str:group_name>',
          views.deletegroupmembers, name='deletegroupmember'),
-    path('editprofile', views.editprofile, name='editprofile')
+    path('editprofile', views.editprofile, name='editprofile'),
     # path('unblockuser', views.unblockuser, name='unblockuser')
-    # path('forgetpage', views.forgetpage, name='forgetpage')
+#     path('forgetpage', views.forgetpage, name='forgetpage')
     # path("",views.,name="")
 ]
