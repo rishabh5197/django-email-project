@@ -28,10 +28,11 @@ table {
 }
 
 .title {
-  font-size: 32px;
+  font-size: 20px;
   font-weight: bold;
   color: chocolate;
 }
+
 .bi-person-check-fill {
   font-size: 150px;
   padding: 25px;
@@ -57,6 +58,12 @@ table {
   height: 10rem;
   background-color: rgba(95, 158, 160, 0.5);
   border-radius: 25px;
+}
+
+.navbarthird {
+  margin-top: 3%;
+  margin-left: 5%;
+  margin-right: 5%;
 }
 
 .groupimage:hover {

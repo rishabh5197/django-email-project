@@ -18,7 +18,7 @@
 {% block content %}
 <div class="mainbody">
   <div class="alert alert-dark" role="alert" align="center">
-    <i class="bi bi-patch-check-fill" style="color: green; font-size: 30px"></i>
+    <i class="bi bi-patch-check-fill" style="color: green; font-size: 16px"></i>
     Allow newly created users
   </div>
   <div>
@@ -40,6 +40,18 @@
         <td>{{i.email_id}}</td>
         <td>{{i.employee_id}}</td>
         <td>
+          <a href='/administrative/viewdetails/{{i.email_id}}'>
+          <button
+              class="btn btn-success"
+              id="activatebutton"
+              type="submit"
+            >
+              View {{i.name}}
+            </button>
+          </a>
+
+
+{% comment %} 
           <a href="/administrative/activate/{{i.email_id}}">
             <button
               class="btn btn-success"
@@ -49,7 +61,7 @@
             >
               Activate {{i.name}}
             </button>
-          </a>
+          </a> {% endcomment %}
         </td>
       </tr>
       {% endfor %}

@@ -1201,8 +1201,8 @@ def registeruser(request):
     captcha_code = FormWithCaptcha
     if request.method == "POST":
         name = request.POST['name']
-        employee_id = request.POST['employee_id']
-        department = request.POST['department']
+        # employee_id = request.POST['employee_id']
+        # department = request.POST['department']
         email_id = request.POST['email_id']
         mobile_number = request.POST['mobile']
         address = request.POST['address']
@@ -1215,9 +1215,12 @@ def registeruser(request):
         # captcha_typed = request.POST['captcha_typed']
 
         if password != confirm_password:
+            print("password doesn't match")
             return render(request, 'mails/registeruser.html', {'errmsg': 'Password not matching...', 'captcha_code': captcha_code})
         else:
+            print("password match")
             if (security_question_1 == security_question_2):
+                print('Both Questions are same.')
                 return render(request, 'mails/registeruser.html', {'errmsg': "security questions can't be same", 'captcha_code': captcha_code})
             else:
                 # to encrypt
@@ -1228,32 +1231,40 @@ def registeruser(request):
                 # -------------- pbkdf2_sha256.verify('Newyork@123',encrypted_password)
                 # attempts = request.POST['attempts']
                 try:
+                    print("trying to validate email address")
                     validate_email(email_id)
+                    print("email address validated.")
                 except ValidationError as e:
+                    print("Email - Address Error.")
                     return render(request, 'mails/registeruser.html', {'errmsg': 'Email address invalid', 'captcha_code': captcha_code})
                 else:
                     print("good email")
-                print(name, employee_id, email_id, password, department, mobile_number,
+                print(name, email_id, password, mobile_number,
                       address, security_question_1, answer_1, security_question_2, answer_2)
-                exists_check = users.objects.filter(
-                    Q(employee_id=employee_id) | Q(email_id=email_id))
+                # exists_check = users.objects.filter(Q(email_id=email_id))
+                exists_check = users.objects.filter(email_id=email_id)
+                print(exists_check)
                 if exists_check:
-                    return render(request, 'mails/registeruser.html', {'exists_error': 'Email Id or Employee id already exists cannot create user,delete it before adding...', 'captcha_code': captcha_code})
+                    print("there exists email- address")
+                    return render(request, 'mails/registeruser.html', {'errmsg': 'Email Id already existing.', 'captcha_code': captcha_code})
                 else:
                     otp_created = random.randrange(10000000, 99999999)
+                    print(f'otp created...{otp_created}')
                     # session_list=[]
                     # now = datetime.now()
                     # session_list.extend([now.minute])
                     request.session['time'] = datetime.strftime(
                         datetime.now(), '%d/%m/%Y %H:%M:%S')
                     request.session['email_id_to_verify'] = email_id
+                    print("Stored to sessions")
+                    print("Started creating query")
                     addusertodb = users.objects.create(
                         name=name,
-                        employee_id=employee_id,
+                        # employee_id=employee_id,
                         email_id=email_id,
                         password=encrypted_password,
                         mobile_number=mobile_number,
-                        department=department,
+                        # department=department,
                         question_1=security_question_1,
                         question_2=security_question_2,
                         answer_1=answer_1,
@@ -1265,6 +1276,8 @@ def registeruser(request):
                         otp=otp_created
                     )
                     addusertodb.save()
+                    print("Ended query")
+                    print("Trying Email send")
                     send_mail(
                         'OTP verification ',
                         f'The otp to verify the account is {otp_created}',
@@ -1272,9 +1285,12 @@ def registeruser(request):
                         [email_id],
                         fail_silently=False,
                     )
+                    print('mail sent')
                     # return render(request, 'mails/registeruser.html', {'msg': 'User is successfully added to database'})
+                    print("redirecting to userverification")
                     return redirect('/userverification')
     else:
+        print("there is some failure")
         return render(request, 'mails/registeruser.html', {'captcha_code': captcha_code})
 
 
@@ -1312,7 +1328,7 @@ def userverification(request):
 
                     print(
                         '------------------------------------- Deleted all session --------------------------------')
-                    request.session['msg'] = 'id created and verified successfully'
+                    request.session['msg'] = 'id created'
                     # return render(request, 'mails/login.html', {'msg': 'id created and verified successfully'})
                     return redirect('/')
                 else:

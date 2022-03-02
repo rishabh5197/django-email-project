@@ -1,0 +1,127 @@
+{% extends 'administrative/base.html' %}
+<!-- extending base html -->
+{% load static %}
+<!-- Loading static -->
+
+{% block title %} view {{email_address}} {% endblock title %}
+<!-- block title -->
+
+<!-- block css -->
+{% block css %}
+<link
+  rel="stylesheet"
+  href="{% static 'administrative/css/viewdetails.css' %}"
+/>
+{% endblock css %}
+
+<!-- block content -->
+{% block content %}
+<form method="POST">
+{% csrf_token %}
+  <div class="mainbody">
+    {% for i in user %}
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <td scope="col"><b>Name</b></td>
+          <td scope="col">{{i.name}}</td>
+        </tr>
+        <tr>
+          <td scope="col"><b>Email address</b></td>
+          <td scope="col">{{i.email_id}}</td>
+        </tr>
+        <tr>
+          <td scope="col"><b>Employee id</b></td>
+          <td scope="col">
+            <input
+              type="text"
+              name="employee_id"
+              id="employee_id"
+              autocomplete="off"
+              class="form-control"
+            />
+          </td>
+        </tr>
+
+        <tr>
+          <td scope="col"><b>Mobile Number</b></td>
+          <td scope="col">{{i.mobile_number}}</td>
+        </tr>
+
+        <tr>
+          <td scope="col"><b>Status</b></td>
+          <td scope="col">{{i.status}}</td>
+        </tr>
+
+        <tr>
+          <td scope="col"><b>Address</b></td>
+          <td scope="col"><pre>{{i.address}}</pre></td>
+        </tr>
+
+        <tr>
+          <td scope="col"><b>Question - 1</b></td>
+          <td scope="col">{{i.question_1}}</td>
+        </tr>
+
+        <tr>
+          <td scope="col"><b>Answer - 1</b></td>
+          <td scope="col">{{i.answer_1}}</td>
+        </tr>
+
+        <tr>
+          <td scope="col"><b>Question - 2</b></td>
+          <td scope="col">{{i.question_2}}</td>
+        </tr>
+
+        <tr>
+          <td scope="col"><b>Answer - 2</b></td>
+          <td scope="col">{{i.answer_2}}</td>
+        </tr>
+
+        <tr>
+          <td scope="col"><b>Group Creation</b></td>
+          <td scope="col">{{i.group_creation}}</td>
+        </tr>
+
+        <tr>
+          <td scope="col"><b>Group Edition</b></td>
+          <td scope="col">{{i.group_edition}}</td>
+        </tr>
+
+        <tr>
+          <td scope="col"><b>Group Edition</b></td>
+          <td scope="col">{{i.group_edition}}</td>
+        </tr>
+
+        <tr>
+          <td scope="col"><b>Department</b></td>
+          <td scope="col">
+            <input
+              type="text"
+              name="department"
+              id="department"
+              class="form-control"
+              autocomplete="off"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div align="center">
+      <!-- <a href="/administrative/activate/{{i.email_id}}">
+        <button
+          class="btn btn-success"
+          id="activatebutton"
+          onclick="alert('Approving {{i.email_id}}')"
+          type="submit"
+        >
+          Activate {{i.name}}
+        </button>
+      </a> -->
+      <button class="btn btn-success" type="submit">Activate {{i.name}}</button>
+    </div>
+
+    {% endfor %}
+  </div>
+</form>
+{% endblock content %}

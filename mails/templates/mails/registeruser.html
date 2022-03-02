@@ -15,8 +15,8 @@ loading static {% endcomment %}
 <!-- this is main block -->
 {% block content %}
 <div class="body" align="center">
-  {% if msg %}
-  <div class="row">{{msg}}</div>
+  {% if errmsg %}
+  <div class="row"> <p style='color:red;'>{{errmsg}}</p></div>
   {% endif %}
   <form method="POST">
     {% csrf_token %}

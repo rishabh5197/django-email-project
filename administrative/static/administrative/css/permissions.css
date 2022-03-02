@@ -7,22 +7,21 @@
   text-align: center;
   /* justify-content: center;
   align-items: center; */
-  font-size: xx-large;
+  /* font-size: xx-large; */
   text-shadow: 0px 0px 2px;
 }
 
 .innerdiv {
   display: grid;
   grid-template-columns: repeat(2, 2fr);
-  font-size: x-large;
+  /* font-size: x-large;   */
 }
 
 .innerdiv > :nth-child(2) {
   margin-left: 25px;
 }
 
-
-.backbutton{
-    margin-top: 25px;
-    text-align: center;
+.backbutton {
+  margin-top: 25px;
+  text-align: center;
 }

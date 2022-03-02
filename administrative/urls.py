@@ -36,6 +36,8 @@ urlpatterns = [
     path('unblockuser/<str:email_add_to_use>',
          views.unblockuser, name='unblockuser'),
     path('permissions/<str:email_address>',
-         views.permissions, name='permissions')
+         views.permissions, name='permissions'),
+    path("viewdetails/<str:email_address>",
+         views.viewdetails, name='viewdetails')
     # path("selection", views.selection, name="selection")
 ]

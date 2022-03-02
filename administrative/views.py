@@ -455,7 +455,38 @@ def addmember(request):
 
 
 def activateuser(request, email_address):
+    print('activating user')
+    print("---------------------------",email_address,"--------------------------------")
+    user = users.objects.filter(email_id=email_address)
+    print(user)
     print(email_address)
-    users.objects.filter(email_id=email_address).update(approval=True)
-    print('approved...')
-    return redirect('approveuser')
+    print(request.method)
+    if request.method == "POST":
+        employee_id = request.POST.get("employee_id")
+        print(employee_id)
+        department = request.POST.get("department")
+        print(department)
+        users.objects.filter(email_id=email_address).update(approval=True,
+                                                            employee_id=employee_id,
+                                                            department=department)
+        print('approved...')
+        return redirect('/administrative/approveuser')
+    else:
+        return render(request, 'administrative/viewdetails.html', {"user": user, 'email_address': email_address})
+
+
+def viewdetails(request, email_address):
+    user = users.objects.filter(email_id=email_address)
+    print(user)
+    if request.method == "POST":
+        employee_id = request.POST.get("employee_id")
+        print(employee_id)
+        department = request.POST.get("department")
+        print(department)
+        users.objects.filter(email_id=email_address).update(approval=True,
+                                                            employee_id=employee_id,
+                                                            department=department)
+        print('approved...')
+        return redirect('/administrative/approveuser')
+    else:
+        return render(request, 'administrative/viewdetails.html', {"user": user, 'email_address': email_address})
