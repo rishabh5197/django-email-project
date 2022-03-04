@@ -1,6 +1,6 @@
 git init
 git add .
-git commit -m "5th commit"
+git commit -m "6th commit"
 git branch -M main
 git remote add origin https://github.com/rishabh5197/django-email-project.git
 git push -u origin main

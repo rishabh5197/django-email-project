@@ -456,7 +456,8 @@ def addmember(request):
 
 def activateuser(request, email_address):
     print('activating user')
-    print("---------------------------",email_address,"--------------------------------")
+    print("---------------------------", email_address,
+          "--------------------------------")
     user = users.objects.filter(email_id=email_address)
     print(user)
     print(email_address)
@@ -490,3 +491,119 @@ def viewdetails(request, email_address):
         return redirect('/administrative/approveuser')
     else:
         return render(request, 'administrative/viewdetails.html', {"user": user, 'email_address': email_address})
+
+
+def createcompanygroup(request):
+    if request.user.is_authenticated:
+        print(request.method)
+        if 'creategroup' in request.GET:
+            print('creategroup' in request.GET)
+            group_name = request.GET.get("group_name")
+            print(group_name)
+            if users_group.objects.filter(group_name=group_name):
+                return render(request, 'administrative/createcompanygroup.html', {'errmsg': 'Group already exists'})
+            else:
+                all_user = users.objects.all().order_by('employee_id')
+                return render(request, 'administrative/createcompanygroup.html', {'all_user': all_user, 'group_name': group_name})
+        elif 'clickedcreategroup' in request.GET:
+            group_name = request.GET.get("group_name")
+            listofemails = request.GET.getlist("check")
+            if listofemails:
+                print(listofemails)
+                for i in listofemails:
+                    print(i)
+                    aa = users_group.objects.create(email_id=i,
+                                                    group_name=group_name)
+                    aa.save()
+                return render(request, 'administrative/createcompanygroup.html', {'goodmsg': 'group created..'})
+            else:
+                all_user = users.objects.all().order_by('employee_id')
+                return render(request, 'administrative/createcompanygroup.html', {'all_user': all_user, 'group_name': group_name, 'errmsg': 'please select one or more members.'})
+        else:
+            pass
+        return render(request, 'administrative/createcompanygroup.html', )
+    else:
+        return redirect('/administrative/')
+
+
+def viewcompanygroup(request):
+    all_groups = users_group.objects.all().values('group_name').distinct()
+    print(all_groups)
+    if all_groups:
+        print(True)
+    else:
+        print(False)
+    return render(request, 'administrative/viewcompanygroup.html', {"all_groups": all_groups})
+
+
+def groupname(request, group_name):
+    print(group_name)
+    all_users = users_group.objects.filter(group_name=group_name)
+    print(all_users)
+    return render(request, 'administrative/companygroupmember.html', {'group_name': group_name, 'all_users': all_users})
+
+
+def deletecompanymember(request, email_id, group_name):
+    users_group.objects.filter(
+        group_name=group_name, email_id=email_id).delete()
+    print("deleted")
+    return redirect(f"/administrative/viewcompanygroup/{group_name}")
+
+
+def addcompanygroupmembers(request, group_name):
+    if request.user.is_authenticated:
+        all_members = [x['email_id'] for x in list(
+            users.objects.all().values('email_id'))]
+        present_users = [x['email_id'] for x in list(users_group.objects.filter(
+            group_name=group_name).values('email_id'))]
+        users_to_be_added = []
+        for i in all_members:
+            if i in present_users:
+                pass
+            else:
+                users_to_be_added.append(i)
+        if request.method == 'POST':
+            checked = request.POST.getlist('check')
+            print(group_name, checked)
+            for i in checked:
+                bb = users_group.objects.create(
+                    email_id=i, group_name=group_name)
+                bb.save()
+            return redirect(f'/administrative/viewcompanygroup/{group_name}')
+
+        else:
+            return render(request, 'administrative/addcompanygroupmembers.html', {'group_name': group_name,
+                                                                                  'users_to_be_added': users_to_be_added})
+    else:
+        return redirect('/administrative/addcompanygroupmembers.html')
+
+
+def deletecompanygroup(request, group_name):
+    print("==================", group_name)
+    users_group.objects.filter(group_name=group_name).delete()
+    return redirect(f"/administrative/viewcompanygroup")
+
+# if request.method == 'POST':
+#         # if request.POST.get('fetch_id'):
+#         if 'fetch_id' in request.POST:
+#             email_address = request.POST.get('email_address')
+#             print(email_address)
+#             questions = users.objects.filter(
+#                 email_id=email_address).values_list('question_1', 'question_2')
+#             question_1, question_2 = questions[0][0], questions[0][1]
+#             return render(request, 'mails/forgetpage.html', {'email_address': email_address, 'question_1': question_1,
+#                                                              'question_2': question_2})
+#         # elif request.POST.get('')
+#         elif 'validate_answers' in request.POST:
+#             email_address = request.POST.get('email_address')
+#             questions = users.objects.filter(
+#                 email_id=email_address).values_list('question_1', 'question_2')
+#             question_1, question_2 = questions[0][0], questions[0][1]
+#             answer_1 = request.POST.get('answer_1')
+#             answer_2 = request.POST.get('answer_2')
+#             return render(request, 'mails/forgetpage.html', {'email_address': email_address,
+#                                                              'question_1': question_1,
+#                                                              'question_2': question_2,
+#                                                              'answer_1': answer_1,
+#                                                              'answer_2': answer_2})
+#     return render(request, 'mails/forgetpage.html', {})

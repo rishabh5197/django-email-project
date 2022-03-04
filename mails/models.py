@@ -68,6 +68,13 @@ class users(models.Model):
     def __str__(self):
         return f"{self.email_id}"
 
+class users_group(models.Model):
+    email_id = models.EmailField(max_length=254,null=True)
+    group_name = models.CharField(max_length=150, null=True,)
+
+    def __str__(self):
+        return f"{self.email_id} in {self.group_name}"
+    
 
 class groups(models.Model):
     group_name = models.CharField(max_length=100, null=True)

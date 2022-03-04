@@ -38,6 +38,17 @@ urlpatterns = [
     path('permissions/<str:email_address>',
          views.permissions, name='permissions'),
     path("viewdetails/<str:email_address>",
-         views.viewdetails, name='viewdetails')
+         views.viewdetails, name='viewdetails'),
+    path("createcompanygroup", views.createcompanygroup, name='createcompanygroups'),
+    path("viewcompanygroup", views.viewcompanygroup, name="viewcompanygroup"),
+    path('viewcompanygroup/<str:group_name>',
+         views.groupname, name="viewcompanygroup"),
+    path("deletecompanymember/<str:email_id>/<str:group_name>",
+         views.deletecompanymember, name="deletecompanymember"),
+    path("addcompanygroupmembers/<str:group_name>",
+         views.addcompanygroupmembers, name="addcompanygroupmembers"),
+    path("deletecompanygroup/<str:group_name>",
+         views.deletecompanygroup, name="deletecompanygroup")
+
     # path("selection", views.selection, name="selection")
 ]
