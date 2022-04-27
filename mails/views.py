@@ -447,6 +447,9 @@ def login(request):
     if request.method == 'POST':
         email_id = request.POST['email']
         check_exist = users.objects.filter(email_id=email_id)
+        oncreationexist = users.objects.filter(
+            email_id=email_id).values('on_creation_password')
+        print('Yes on creation password exists.....', oncreationexist)
         if check_exist:
             password = request.POST['password']
             user_data = users.objects.filter(email_id=email_id)
@@ -465,10 +468,32 @@ def login(request):
                 if int(user_data.values_list()[0][13]) < 3:
                     request.session['name'] = user_data.values_list()[0][1]
                     request.session['email_address'] = request.POST['email']
-                    sending_otp = random.randrange(10000000, 99999999)
-                    users.objects.filter(
-                        email_id=email_id).update(otp=sending_otp)
-                    return redirect('/validatewithotp')
+                    if 'OTPbutton' in request.POST:
+                        otp = request.POST['OTP']
+                        print(otp)
+                        filtering_value = users.objects.filter(
+                            email_id=email_id, otp=otp)
+                        print('----------------------------------------',
+                              filtering_value)
+                        if len(filtering_value) > 0 and len(filtering_value) < 2:
+                            print("came in if condition......")
+                            request.session['approval'] = 'yes'
+                            request.session['verified'] = 'yes'
+                            users.objects.filter(
+                                email_id=email_id).update(attempts=0)
+                            return redirect('/selection')
+                        else:
+                            return render(request, 'mails/login.html', {'errmsg': 'OTP not validated...'})
+                    else:
+                        sending_otp = random.randrange(10000000, 99999999)
+                        users.objects.filter(
+                            email_id=email_id).update(otp=sending_otp)
+                        send_mail('Login OTP verification ',
+                                  f'The otp to verify the account is {sending_otp}',
+                                  settings.EMAIL_HOST_USER,
+                                  [request.session.get('email_address')],
+                                  fail_silently=False,)
+                        return render(request, 'mails/login.html', {'enterotp': True, 'email_id': email_id, 'password': password})
                 else:
                     return render(request, 'mails/login.html', {'errmsg': 'Cannot login, account locked, please contact admin ', 'msg': msg})
             else:
@@ -1212,8 +1237,8 @@ def registeruser(request):
         answer_1 = request.POST['answer_1']
         security_question_2 = request.POST['question_2']
         answer_2 = request.POST['answer_2']
+        employee_id = "E - "+str(int(users.objects.latest('id').id)+1)
         # captcha_typed = request.POST['captcha_typed']
-
         if password != confirm_password:
             print("password doesn't match")
             return render(request, 'mails/registeruser.html', {'errmsg': 'Password not matching...', 'captcha_code': captcha_code})
@@ -1260,7 +1285,7 @@ def registeruser(request):
                     print("Started creating query")
                     addusertodb = users.objects.create(
                         name=name,
-                        # employee_id=employee_id,
+                        employee_id=employee_id,
                         email_id=email_id,
                         password=encrypted_password,
                         mobile_number=mobile_number,

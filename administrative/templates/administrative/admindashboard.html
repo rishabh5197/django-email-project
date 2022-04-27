@@ -107,6 +107,7 @@ Dashboard {% endblock %} {% block css%}
           <th scope="col"><b>Name</b></th>
           <th scope="col"><b>Email Address</b></th>
           <th scope="col"><b>Employee ID</b></th>
+          <th scope="col"><b>Need Approval </b></th>
           <th scope="col"><b>Status</b></th>
           <th scope="col"><b>Actions</b></th>
         </tr>
@@ -118,11 +119,23 @@ Dashboard {% endblock %} {% block css%}
           <td>{{j.name}}</td>
           <td>{{j.email_id}}</td>
           <td>{{j.employee_id}}</td>
+
+          {% if j.approval is False %}
+          <td>
+            <a class="btn btn-danger" href="viewdetails/{{j.email_id}}"
+              >Approve</a
+            >
+          </td>
+          {% else %}
+          <td><button class="btn btn-success" onclick=alert("{{j.email_id}} is already approved")>Approved</button></td>
+          {% endif %} 
           {% if j.status is True %}
           <td style="color: forestgreen">Active</td>
           {% else %}
           <td style="color: red">Inactive</td>
           {% endif %}
+
+          {% if j.approval is True %}
           <td>
             <a href="edit/{{j.employee_id}}"
               ><i class="bi bi-pencil-square" style="color: goldenrod"></i
@@ -149,6 +162,10 @@ Dashboard {% endblock %} {% block css%}
               ><i class="bi bi-card-checklist"></i
             ></a>
           </td>
+          {% else %}
+          <td>Action needed</td>
+          {% endif %}
+          
         </tr>
         {% endfor %}
       </tbody>

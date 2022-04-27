@@ -17,7 +17,7 @@
 <!-- block content -->
 {% block content %}
 <form method="POST">
-{% csrf_token %}
+  {% csrf_token %}
   <div class="mainbody">
     {% for i in user %}
     <table class="table table-striped">
@@ -32,15 +32,7 @@
         </tr>
         <tr>
           <td scope="col"><b>Employee id</b></td>
-          <td scope="col">
-            <input
-              type="text"
-              name="employee_id"
-              id="employee_id"
-              autocomplete="off"
-              class="form-control"
-            />
-          </td>
+          <td scope="col"><b>{{i.employee_id}}</b></td>
         </tr>
 
         <tr>
@@ -96,6 +88,14 @@
         <tr>
           <td scope="col"><b>Department</b></td>
           <td scope="col">
+            <select name="department" id="department" class="form-control">
+              <option value="IT">IT</option>
+              <option value="Finance">Finance</option>
+              <option value="HR">HR</option>
+              <option value="Marketing">Marketing</option>
+            </select>
+
+            {% comment %}
             <input
               type="text"
               name="department"
@@ -103,6 +103,7 @@
               class="form-control"
               autocomplete="off"
             />
+            {% endcomment %}
           </td>
         </tr>
       </tbody>

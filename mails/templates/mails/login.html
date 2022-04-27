@@ -25,8 +25,8 @@
           color: black;
           text-shadow: 0px 0px 2px black;
           margin-bottom: 10px;
-          border-top-left-radius:25px;
-          border-top-right-radius:25px;
+          border-top-left-radius: 25px;
+          border-top-right-radius: 25px;
         "
       >
         Login
@@ -41,6 +41,17 @@
             Email &nbsp;<i class="bi bi-envelope-fill"></i>
           </span>
         </div>
+        {% if email_id %}
+        <input
+          type="email"
+          name="email"
+          id="email"
+          placeholder="abc@gmail.com"
+          autocomplete="off"
+          class="form-control"
+          value="{{email_id}}"
+        />
+        {% else %}
         <input
           type="email"
           name="email"
@@ -49,6 +60,7 @@
           autocomplete="off"
           class="form-control"
         />
+        {% endif %}
       </div>
 
       <div class="input-group mb-3">
@@ -57,6 +69,17 @@
             Pass &nbsp;&nbsp;&nbsp;<i class="bi bi-lock-fill"></i>
           </span>
         </div>
+        {% if password %}
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Password"
+          autocomplete="off"
+          class="form-control"
+          value="{{password}}"
+        />
+        {% else %}
         <input
           type="password"
           name="password"
@@ -65,12 +88,28 @@
           autocomplete="off"
           class="form-control"
         />
+        {% endif %}
       </div>
       <div style="margin: 10px">
-        <button type="submit" class="btn btn-warning">
+        <button type="submit" class="btn btn-warning" name="loginpressed">
           <i class="bi bi-arrow-right-circle-fill"></i> Login
         </button>
       </div>
+
+      {% if enterotp %}
+      <div>
+        <label for="OTP">Enter OTP</label>
+        <input type="text" name="OTP" id="OTP" />
+        <button
+          type="submit"
+          class="btn btn-success"
+          name="OTPbutton"
+          style="margin-top: 10px"
+        >
+          Validate OTP
+        </button>
+      </div>
+      {% endif %}
     </form>
     <p style="color: black">Don't have an account ?</p>
     <div border="1px solid black;">

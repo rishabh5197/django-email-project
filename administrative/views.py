@@ -1,3 +1,4 @@
+import array
 from email.message import EmailMessage
 from time import sleep
 from urllib import request
@@ -29,6 +30,7 @@ from mails.models import *
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 import time
+import random
 
 
 def permissions(request, email_address):
@@ -362,7 +364,6 @@ def add_user(request):
             name = request.POST['name']
             employee_id = request.POST['employee_id']
             email_id = request.POST['email_id']
-
             password = request.POST['password']
             # to encrypt
             # -------------- pbkdf2_sha256.encrypt(password, rounds=30000, salt_size=64)
@@ -391,8 +392,11 @@ def add_user(request):
             if exists_check:
                 return render(request, 'administrative/adduser.html', {'name': request.user.username, 'form': adduser, 'exists_error': 'Email Id or Employee id already exists cannot create user,delete it before adding...'})
             else:
+                # employee_id = "E - "+str(int(users.objects.latest('id').id)+1)
+                employee_id = users.objects.filter(
+                    email_id=email_id).values(employee_id)
+                print("------ Employee id is ------ :- ", employee_id)
                 addusertodb = users.objects.create(name=name,
-                                                   employee_id=employee_id,
                                                    password=encrypted_password,
                                                    email_id=email_id,
                                                    status=status,
@@ -476,19 +480,99 @@ def activateuser(request, email_address):
         return render(request, 'administrative/viewdetails.html', {"user": user, 'email_address': email_address})
 
 
+def strong_password():
+    # maximum length of password needed
+    # this can be changed to suit your password length
+    MAX_LEN = 12
+
+    # declare arrays of the character that we need in out password
+    # Represented as chars to enable easy string concatenation
+    DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    LOCASE_CHARACTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
+                         'i', 'j', 'k', 'm', 'n', 'o', 'p', 'q',
+                         'r', 's', 't', 'u', 'v', 'w', 'x', 'y',
+                         'z']
+
+    UPCASE_CHARACTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+                         'I', 'J', 'K', 'M', 'N', 'O', 'P', 'Q',
+                         'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
+                         'Z']
+
+    SYMBOLS = ['@', '#', '$', '%', '=', ':', '?', '.', '/', '|', '~', '>',
+               '*', '(', ')', '<']
+
+    # combines all the character arrays above to form one array
+    COMBINED_LIST = DIGITS + UPCASE_CHARACTERS + LOCASE_CHARACTERS + SYMBOLS
+
+    # randomly select at least one character from each character set above
+    rand_digit = random.choice(DIGITS)
+    rand_upper = random.choice(UPCASE_CHARACTERS)
+    rand_lower = random.choice(LOCASE_CHARACTERS)
+    rand_symbol = random.choice(SYMBOLS)
+
+    # combine the character randomly selected above
+    # at this stage, the password contains only 4 characters but
+    # we want a 12-character password
+    temp_pass = rand_digit + rand_upper + rand_lower + rand_symbol
+
+    # now that we are sure we have at least one character from each
+    # set of characters, we fill the rest of
+    # the password length by selecting randomly from the combined
+    # list of character above.
+    for x in range(MAX_LEN - 4):
+        temp_pass = temp_pass + random.choice(COMBINED_LIST)
+
+        # convert temporary password into array and shuffle to
+        # prevent it from having a consistent pattern
+        # where the beginning of the password is predictable
+        temp_pass_list = array.array('u', temp_pass)
+        random.shuffle(temp_pass_list)
+
+    # traverse the temporary password array and append the chars
+    # to form the password
+    password = ""
+    for x in temp_pass_list:
+        password = password + x
+
+    # print out password
+    print(password)
+    return password
+
+
 def viewdetails(request, email_address):
+    print("ID :-", int(users.objects.latest('id').id)+1)
     user = users.objects.filter(email_id=email_address)
     print(user)
     if request.method == "POST":
-        employee_id = request.POST.get("employee_id")
-        print(employee_id)
+        # employee_id = request.POST.get("employee_id")
+
+        # -------------- this is yet to resolve --------------------
+
+        # employee_id = "E -"+str(user.objects.filter())
+
+        # -------------- this is yet to resolve --------------------
+        # print(employee_id)
         department = request.POST.get("department")
         print(department)
+        # users.objects.filter(email_id=email_address).update(approval=True,
+        #                                                     employee_id=employee_id,
+        #                                                     department=department)
+
+        print('approved....')
+        password = strong_password()
+        print(password)
+        send_mail('Password for your account',
+                  f'Here is your temporary password {password} to log in to your account',
+                  settings.EMAIL_HOST_USER,
+                  [email_address],
+                  fail_silently=False,)
+        encrypted_password = pbkdf2_sha256.encrypt(
+            password, rounds=30000, salt_size=32)
         users.objects.filter(email_id=email_address).update(approval=True,
-                                                            employee_id=employee_id,
-                                                            department=department)
-        print('approved...')
-        return redirect('/administrative/approveuser')
+                                                            department=department,
+                                                            on_creation_password=encrypted_password)
+        print("email sent")
+        return redirect('/administrative/dashboard')
     else:
         return render(request, 'administrative/viewdetails.html', {"user": user, 'email_address': email_address})
 
