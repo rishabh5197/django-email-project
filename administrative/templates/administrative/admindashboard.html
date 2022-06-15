@@ -118,7 +118,10 @@ Dashboard {% endblock %} {% block css%}
           <td><b>{{forloop.counter}}.</b></td>
           <td>{{j.name}}</td>
           <td>{{j.email_id}}</td>
-          <td>{{j.employee_id}}</td>
+          
+          <td>{{j.employee_id}} {% if j.approval is False %}
+            <span style="background-color:#84db9b;padding:2px;">New</span>
+          {% endif %}</td>
 
           {% if j.approval is False %}
           <td>

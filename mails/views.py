@@ -437,6 +437,14 @@ def editgroupdetails(request, group_name):
         return redirect('/')
 
 
+def createnewpassword(request):
+    try:
+        email = request.session.get('email_id')
+        return render(request, 'mails/createnewpassword.html', {'email': email})
+    except Exception as e:
+        redirect('/login')
+
+
 def login(request):
     try:
         msg = request.session.get('msg')
@@ -450,6 +458,9 @@ def login(request):
         oncreationexist = users.objects.filter(
             email_id=email_id).values('on_creation_password')
         print('Yes on creation password exists.....', oncreationexist)
+        # if oncreationexist and check_exist:
+        #     request.session['email_id'] = email_id
+        #     return redirect('/createnewpassword')
         if check_exist:
             password = request.POST['password']
             user_data = users.objects.filter(email_id=email_id)
